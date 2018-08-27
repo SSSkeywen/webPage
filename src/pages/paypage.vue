@@ -26,32 +26,57 @@
         <div class="bp_btn">
             <button @click="payFn">完成</button>
         </div>
+        <div class="nav_box" v-if="isShowPay">
+          <div class="">
+          <nav class="nav_top" style="padding-top:10%;width:100%; text-align:center;">
+            <img :src="iconImg" width="75px" height="75px">
+          </nav>
+            <nav class="nav_content">
+            <div class="tips_content">
+          <hgroup>尊敬的{{ clientName }}{{ sexMF }}，您好！</hgroup>
+          <p> &nbsp;&nbsp;&nbsp;&nbsp;您的保单已承保，将于明日零时生效，如需获取电子保单可登陆“<b>中国太平95589</b>”微信公众号获取更多服务，感谢您的支持！</p>
+        </div>
+            
+            
+          </nav>
+
+          <nav class="nav_btn">
+            <button name = "image" @click="payTips">知道了</button>
+          </nav>
+        </div>
+        </div>
     </div>
 </template>
 
 <script>
+import { Dialog } from "vant";
 export default {
   data() {
     return {
+      isShowPay: false, //温馨提示
+      clientName: "",
+      iconImg: require("../../static/img/icon_2.jpg"),
+      sexMF: "",
       bplists: [
         {
           listleft: "商品",
           listright: "太平个人税收递延型养老金保险",
           linestyle: "bp_line"
-        },{
+        },
+        {
           listleft: "交易单号",
-          listright: "887490287559087634",
+          listright: "",
           linestyle: "bp_line"
         },
         {
           listleft: "交易时间",
-          listright: "2018-01-09 14:12:25",
+          listright: "",
           linestyle: "bp_line"
         },
         {
           listleft: "当前状态",
           listright: "支付成功",
-          linestyle: "bp_line",
+          linestyle: "bp_line"
         }
       ],
       bplistsTwo: [
@@ -63,25 +88,49 @@ export default {
       bplistsTree: [
         {
           listleft: "总价",
-          listright: "￥1000"
+          listright: ""
         }
       ]
     };
   },
+  created() {
+    let messageDataList = JSON.parse(
+      window.localStorage.getItem("messageDataList")
+    );
+
+    let buyList = JSON.parse(window.localStorage.getItem("buyList"));
+    let policyDataList = JSON.parse(
+      window.localStorage.getItem("policyDataList")
+    );
+
+    console.log(policyDataList);
+    if (policyDataList.gender == "M") {
+      this.sexMF = "先生";
+    } else {
+      this.sexMF = "女士";
+    }
+    this.bplists[1].listright = buyList.hiddenParameters.orderCode;
+    this.bplists[2].listright = buyList.hiddenParameters.submitTime;
+    this.bplistsTree[0].listright = "¥ " + messageDataList.subPayMuch;
+    this.clientName = policyDataList.realName;
+  },
   methods: {
     payFn() {
-      this.$router.push({ path: '/paypage'})
+      this.isShowPay = true;
+    },
+    payTips() {
+      this.$router.push({ path: "/home" });
     }
-  },
+  }
 };
 </script>
 
 <style lang="scss" scoped>
-.pp_box{
-    width: 100%;
-    height: 100%;
-    background-color: rgb(239, 239, 244);
-    overflow-y: auto;
+.pp_box {
+  width: 100%;
+  height: 100%;
+  background-color: rgb(239, 239, 244);
+  overflow-y: auto;
 }
 .bp_logo {
   width: 100%;
@@ -92,9 +141,9 @@ export default {
 .bp_content {
   width: 100%;
   ul {
-      background-color: #fff;
-      margin-top: 10px;
-      position: relative;
+    background-color: #fff;
+    margin-top: 10px;
+    position: relative;
     li {
       position: relative;
     }
@@ -113,8 +162,8 @@ export default {
       }
     }
   }
-  ul:first-child{
-      margin: 0;
+  ul:first-child {
+    margin: 0;
   }
   .bp_ul_line:before {
     content: " ";
@@ -213,5 +262,65 @@ export default {
     color: #fff;
     font-size: 0.47rem;
   }
+}
+.tips_content {
+  padding: 0.3rem 0.5rem;
+  font-size: 14px;
+  color: #666666;
+  hgroup {
+    margin-bottom: 0.3rem;
+  }
+  b {
+    font-weight: bold;
+    color: #000;
+  }
+}
+.nav_btn {
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  margin-top: 2%;
+}
+.nav_btn button {
+  width: 90%;
+  height: 40px;
+  border: 0px;
+  margin: 0 5%;
+  background: #04be01;
+  color: #fff;
+  border-radius: 5px;
+  font-size: 16px;
+}
+.nav_content2 p {
+  width: 100%;
+  line-height: 50px;
+  text-align: center;
+  display: inline-block;
+  font-size: 18px;
+  color: #000;
+}
+.nav_content2 span {
+  width: 88%;
+  line-height: 30px;
+  text-align: center;
+  display: inline-block;
+  margin: 0 6%;
+  min-height: 50px;
+  color: #666;
+}
+.nav_content2 {
+  width: 100%;
+  text-align: center;
+  font-size: 16px;
+  padding: 10px 0px;
+}
+.nav_box {
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2000;
 }
 </style>

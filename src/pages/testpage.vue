@@ -17,13 +17,14 @@
       <div class="tb_button">
           <button @click="testanswer">提交</button>
       </div>
+      <alertWrong ref="alertFn"></alertWrong>
   </div>
 </template>
 
 <script>
 import { mapActions } from "vuex";
 import { Toast } from "vant";
-
+import alertWrong from "../components/alertWrong.vue";
 export default {
   data() {
     return {
@@ -35,27 +36,27 @@ export default {
             {
               answercontent: "A. 30岁以下",
               checkedanswer: "",
-              value: '3'
+              value: "3"
             },
             {
               answercontent: "B. 31-40岁",
               checkedanswer: "",
-              value: '7'
+              value: "7"
             },
             {
               answercontent: "C. 41-50岁",
               checkedanswer: "",
-              value: '9'
+              value: "9"
             },
             {
               answercontent: "D. 51-60岁",
               checkedanswer: "",
-              value: '5'
+              value: "5"
             },
             {
               answercontent: "E. 60岁以上",
               checkedanswer: "",
-              value: '1'
+              value: "1"
             }
           ]
         },
@@ -66,27 +67,27 @@ export default {
             {
               answercontent: "A. 70%以上",
               checkedanswer: "",
-              value: '1'
+              value: "1"
             },
             {
               answercontent: "B. 50%-70%",
               checkedanswer: "",
-              value: '3'
+              value: "3"
             },
             {
               answercontent: "C. 30%－50%",
               checkedanswer: "",
-              value: '5'
+              value: "5"
             },
             {
               answercontent: "D. 10%－30% ",
               checkedanswer: "",
-              value: '7'
+              value: "7"
             },
             {
               answercontent: "E. 10%以下",
               checkedanswer: "",
-              value: '9'
+              value: "9"
             }
           ]
         },
@@ -97,27 +98,27 @@ export default {
             {
               answercontent: "A. 全部投资于A",
               checkedanswer: "",
-              value: '0'
+              value: "0"
             },
             {
               answercontent: "B. 大部分投资于A",
               checkedanswer: "",
-              value: '3'
+              value: "3"
             },
             {
               answercontent: "C. 两种投资各一半",
               checkedanswer: "",
-              value: '5'
+              value: "5"
             },
             {
               answercontent: "D. 大部分投资于B",
               checkedanswer: "",
-              value: '7'
+              value: "7"
             },
             {
               answercontent: "E. 全部投资于B",
               checkedanswer: "",
-              value: '9'
+              value: "9"
             }
           ]
         },
@@ -127,27 +128,27 @@ export default {
             {
               answercontent: "A. 无法承担风险，准备赎回",
               checkedanswer: "",
-              value: '2'
+              value: "2"
             },
             {
               answercontent: "B. 3至6个月内如果还是亏损25%，准备赎回",
               checkedanswer: "",
-              value: '4'
+              value: "4"
             },
             {
               answercontent: "C. 1年之内还是亏损25%，准备赎回",
               checkedanswer: "",
-              value: '6'
+              value: "6"
             },
             {
               answercontent: "D. 2至3年内都可以持有，等待机会",
               checkedanswer: "",
-              value: '8'
+              value: "8"
             },
             {
               answercontent: "E. 长期持有，等待机会",
               checkedanswer: "",
-              value: '10'
+              value: "10"
             }
           ]
         },
@@ -157,27 +158,27 @@ export default {
             {
               answercontent: "A. 资产保值，我不愿意承担任何投资风险",
               checkedanswer: "",
-              value: '1'
+              value: "1"
             },
             {
               answercontent: "B. 尽可能保证本金安全，不在乎收益率比较低",
               checkedanswer: "",
-              value: '3'
+              value: "3"
             },
             {
               answercontent: "C. 投资风险可控的前提下，产生一定收益",
               checkedanswer: "",
-              value: '5'
+              value: "5"
             },
             {
               answercontent: "D. 产生较多的收益，可以承担一定的投资风险",
               checkedanswer: "",
-              value: '7'
+              value: "7"
             },
             {
               answercontent: "E. 实现资产大幅增长，愿意承担很大的投资风险",
               checkedanswer: "",
-              value: '9'
+              value: "9"
             }
           ]
         },
@@ -187,27 +188,27 @@ export default {
             {
               answercontent: "A. 无，一片空白",
               checkedanswer: "",
-              value: '0'
+              value: "0"
             },
             {
               answercontent: "B. 有限，懂一些",
               checkedanswer: "",
-              value: '3'
+              value: "3"
             },
             {
               answercontent: "C. 一般，自修有心得",
               checkedanswer: "",
-              value: '5'
+              value: "5"
             },
             {
               answercontent: "D. 较好，相关专业科班毕业",
               checkedanswer: "",
-              value: '7'
+              value: "7"
             },
             {
               answercontent: "E. 丰富，有专业执照或以此为职业",
               checkedanswer: "",
-              value: '9'
+              value: "9"
             }
           ]
         },
@@ -217,17 +218,17 @@ export default {
             {
               answercontent: "A. 短期—0到1年",
               checkedanswer: "",
-              value: '1'
+              value: "1"
             },
             {
               answercontent: "B. 中期—1到5年",
               checkedanswer: "",
-              value: '5'
+              value: "5"
             },
             {
               answercontent: "C. 长期—5年以上",
               checkedanswer: "",
-              value: '7'
+              value: "7"
             }
           ]
         }
@@ -235,54 +236,83 @@ export default {
       answerData: [] //答案数组
     };
   },
+  components:{alertWrong},
   created() {
     for (let i = 0; i < this.testContents.length; i++) {
       this.answerData.push("无答案");
     }
   },
+  mounted() {
+    let answerData = JSON.parse(window.localStorage.getItem("answerData"));
+    console.log(answerData);
+    if (answerData != "" && answerData != undefined && answerData != null) {
+      this.answerData = answerData;
+      for (let i = 0; i < answerData.length; i++) {
+        for (let j = 0; j < this.testContents[i].testanswerlist.length; j++) {
+          if (this.testContents[i].testanswerlist[j].value == answerData[i]) {
+            this.testContents[i].testanswerlist[j].checkedanswer = true;
+          }
+        }
+      }
+    }
+  },
   methods: {
     ...mapActions({
-      testanswerFn: "TESTASWER",//答题提交答案页面
+      testanswerFn: "TESTASWER" //答题提交答案页面
     }),
     //选择答案操作
     selectAnswerFn(index, indexNm) {
-      console.log(index + "-" + indexNm);
+      // console.log(index + "-" + indexNm);
       for (let i = 0; i < this.testContents[index].testanswerlist.length; i++) {
         this.testContents[index].testanswerlist[i].checkedanswer = false;
       }
       this.testContents[index].testanswerlist[indexNm].checkedanswer = true;
       //   this.answerData.push(index+'-'+indexNm)
-      this.answerData.splice(index, 1, this.testContents[index].testanswerlist[indexNm].value);
+      this.answerData.splice(
+        index,
+        1,
+        this.testContents[index].testanswerlist[indexNm].value
+      );
     },
     testanswer() {
       console.log(this.answerData);
       for (let item of this.answerData) {
-        console.log(item);
+        // console.log(item);
         if (item == "无答案") {
-          this.$dialog.alert({
-            message: "所有的问题都要选择！"
-          });
+          this.$refs.alertFn.isworngFn("所有的问题都要勾选！");
           return false;
         }
       }
-      //   Toast.loading({
-      //     mask: true,
-      //     message: "加载中..."
-      //   });
+      const toast1 = Toast.loading({
+        mask: true,
+        message: "提交中...",
+        duration: 20000
+      });
+      window.localStorage.setItem(
+        "answerData",
+        JSON.stringify(this.answerData)
+      );
       let openidList = JSON.parse(window.localStorage.getItem("openidList"));
       let tepagentB = JSON.stringify(openidList.openId);
-      console.log(openidList)
-      let answerDataB = this.answerData.join(',')
-      console.log(answerDataB)
+      // console.log(openidList)
+
+      let answerDataB = this.answerData.join(",");
+      console.log(answerDataB);
       let testAswerData = new FormData();
       testAswerData.append("testaswerData", answerDataB);
       testAswerData.append("openId", tepagentB);
       this.testanswerFn({
         testAswerData,
         successCallback: () => {
-            this.$router.push({ path: "/resultpage" });
+          toast1.clear();
+          this.$router.push({ path: "/resultpage" });
         },
-        failCallback: () => {}
+        failCallback: result => {
+          toast1.clear();
+          this.$dialog.alert({
+            message: result
+          });
+        }
       });
     }
   },
@@ -325,7 +355,7 @@ export default {
         box-sizing: border-box;
         img {
           width: 100%;
-          margin-bottom: 3px;
+          margin-bottom: 2px;
         }
       }
     }

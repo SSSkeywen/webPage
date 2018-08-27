@@ -19,23 +19,19 @@
 
 <script>
 export default {
-    methods:{
-        testpage(){
-            this.$router.push({ path: '/testpage'})
-        }
-    },
-    computed: {
-		    // userAuthed () {
-		    //   return this.$store.getters.userAuthed
-		    // }
-		  }
+  methods: {
+    testpage() {
+      this.$router.push({ path: "/testpage" });
+    }
+  },
+  computed: {}
 };
 </script>
 
 <style lang="scss" scoped>
 @import "../style/style.scss";
 .assess_box {
-    padding-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
   .assess_top {
     width: 100%;
     height: 2.3rem;

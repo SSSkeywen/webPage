@@ -4,7 +4,7 @@ export default {
     codeCrad: (result) => {
         let code = result
         let resultFlag = true
-        var city = { 11: "北京", 12: "天津", 13: "河北", 14: "山西", 15: "内蒙古", 21: "辽宁", 22: "吉林", 23: "黑龙江 ", 31: "上海", 32: "江苏", 33: "浙江", 34: "安徽", 35: "福建", 36: "江西", 37: "山东", 41: "河南", 42: "湖北 ", 43: "湖南", 44: "广东", 45: "广西", 46: "海南", 50: "重庆", 51: "四川", 52: "贵州", 53: "云南", 54: "西藏 ", 61: "陕西", 62: "甘肃", 63: "青海", 64: "宁夏", 65: "新疆", 71: "台湾", 81: "香港", 82: "澳门", 91: "国外 " };
+        let city = { 11: "北京", 12: "天津", 13: "河北", 14: "山西", 15: "内蒙古", 21: "辽宁", 22: "吉林", 23: "黑龙江 ", 31: "上海", 32: "江苏", 33: "浙江", 34: "安徽", 35: "福建", 36: "江西", 37: "山东", 41: "河南", 42: "湖北 ", 43: "湖南", 44: "广东", 45: "广西", 46: "海南", 50: "重庆", 51: "四川", 52: "贵州", 53: "云南", 54: "西藏 ", 61: "陕西", 62: "甘肃", 63: "青海", 64: "宁夏", 65: "新疆", 71: "台湾", 81: "香港", 82: "澳门", 91: "国外 " };
         if (code.length == 18) {
             if (!city[code.substr(0, 2)]) {
                 resultFlag = false;
@@ -39,5 +39,78 @@ export default {
             resultFlag = false;
         }
         return resultFlag;
+    },
+    // 邮编校验
+    zipFn: (zipData) => {
+        let regex = /^[0-9]{6}$/;
+        let resultFlag = true
+        if (!regex.exec(zipData)) {
+            resultFlag = false;
+        }
+        return resultFlag;
+    },
+    // 社会统一信用代码校验
+    shCodeFn: (shCodeData) => {
+        let regex = /^[0-9A-Z]{18}$/;
+        let resultFlag = true
+        if (!regex.exec(shCodeData)) {
+            resultFlag = false;
+        }
+        return resultFlag;
+    },
+    // 纳税人识别号吗的校验
+    nsrCodeFn: (nsrCodeData) => {
+        let regex = /^[0-9A-Za-z]{14,21}$/;
+        let resultFlag = true
+        if (!regex.exec(nsrCodeData)) {
+            resultFlag = false;
+        }
+        return resultFlag;
+    },
+    //邮箱校验
+    emailFn: (emailData) => {
+        let regex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]+$/;
+        let resultFlag = true
+        if (!regex.exec(emailData)) {
+            resultFlag = false;
+        }
+        return resultFlag;
+    },
+    //手机号码校验
+    phoneFn: (phoneData) => {
+        let regex = /^1\d{10}$/;
+        let resultFlag = true
+        if (!regex.exec(phoneData)) {
+            resultFlag = false;
+        }
+        return resultFlag;
+    },
+    //验证码校验
+    VcCode: (VcCodeData) => {
+        let regex = /^(?![0-9]+$)[a-zA-Z_]+[0-9A-Za-z]{4,30}$/;
+        let resultFlag = true
+        if (!regex.exec(VcCodeData)) {
+            resultFlag = false;
+        }
+        return resultFlag;
+    },
+    //校验只让输入正整数
+    IntegerFn:(text) => {
+        let reg = /^\d*[1-9]{1,}\d*$/;
+        let resultFlag = true
+        if (!reg.exec(text)) {
+            resultFlag = false;
+        }
+        return resultFlag;
+    },
+    //校验只银行卡
+    payCardFn: (cardData) => {
+        let reg2 = /^([0-9]{1,19})?$/;
+        let resultFlag = true
+        if (!reg2.test(cardData)) {
+            resultFlag = false;
+        }
+        return resultFlag;
     }
+
 }

@@ -1,35 +1,35 @@
 <template>
   <div class="box">
     <div class="tb_box">
-      <p class="tb_box_title">投保人(即被保险人)基本信息</p>
+      <p class="tb_box_title" style="margin-top:0;">投保人(即被保险人)基本信息</p>
       <ul class="tb_box_content">
         <li class="tb_box_li hasline">
           <p>姓名</p>
           <div class="tb_box_date_two">
-            <input type="text" v-model="plicyName" placeholder="请输入">
+            <input type="text" maxlength="10" v-model="plicyName" placeholder="请输入" v-focus="true" >
           </div>
         </li>
         <li class="tb_box_li hasline">
           <p>证件类型</p>
-          <div class="tb_box_date three">
-              <p>身份证</p>
+          <div class="tb_box_date">
+              <p style="color: #333;padding:0;">身份证</p>
           </div>
         </li>
         <li class="tb_box_li hasline">
           <p>证件号码</p>
           <div class="tb_box_date_two">
-            <input v-model="plicyCardNm" type="text" placeholder="请输入">
+            <input v-model="plicyCardNm" @change="birthdayContent" maxlength="30" type="text" placeholder="请输入">
           </div>
         </li>
         <li class="tb_box_li hasline">
           <p>证件有效期</p>
           <div class="tb_box_date three" @click="isIdentity=!isIdentity">
-              <p>{{ identityTimeData }}</p>
+              <p :class="identityTimeData=='请选择'?'color-cacaca':''">{{ identityTimeData }}</p>
           </div>
         </li>
         <li class="tb_box_li hasline">
           <p>出生日期</p>
-          <div class="tb_box_date" @click="phShwoDate=!phShwoDate">
+          <div class="tb_box_date">
             <!-- <input type="date"> -->
             <p class="ph_date">{{ phbirthdayData }}</p>
           </div>
@@ -37,24 +37,24 @@
         <li class="tb_box_li hasline">
           <p>性别</p>
           <div class="tb_box_date ph_sex">
-            <p @click="menorwomen=true;sexMF = 'M'" :class="menorwomen?'sex_checked':''">男</p>
-            <p @click="menorwomen=false;sexMF = 'F'" :class="menorwomen?'':'sex_checked'">女</p>
+            <p :class="adsexMFOne">男</p>
+            <p :class="adsexMFTwo">女</p>
           </div>
         </li>
         <li class="tb_box_li hasline">
           <p>职业</p>
           <div class="tb_box_date three" @click="isShowOccupation=!isShowOccupation">
-            <p>{{ occuptionName }}</p>
+            <p :class="occuptionName=='请选择'?'color-cacaca':''">{{ occuptionName }}</p>
           </div>
         </li>
         <li class="tb_box_li hasline">
           <p>所在地区</p>
           <div class="tb_box_date three">
-            <p @click="nowAddress=!nowAddress">{{ nowAddressData }}</p>
+            <p @click="nowAddress=!nowAddress" :class="nowAddressData=='请选择'?'color-cacaca':''">{{ nowAddressData }}</p>
           </div>
         </li>
         <li class="tb_box_li hasline">
-            <textarea name="" placeholder="请填写详细地址，不少于5个字" id="" cols="30" rows="10"></textarea>
+            <textarea  maxlength="30" name="" v-model="addressData" placeholder="请填写详细地址，不少于5个字" id="" cols="30" rows="10"></textarea>
           <!-- <p>交费金额</p>
           <div class="tb_box_date_two">
             <input type="text" placeholder="请输入">&nbsp;&nbsp;元
@@ -63,13 +63,13 @@
         <li class="tb_box_li hasline">
           <p>邮政编码</p>
           <div class="tb_box_date_two">
-            <input v-model="zipData" type="text" placeholder="请输入">
+            <input v-model="zipData" type="text" maxlength="10" placeholder="请输入">
           </div>
         </li>
         <li class="tb_box_li hasline">
           <p>电子邮箱</p>
           <div class="tb_box_date_two">
-            <input v-model="EmailData" type="text" placeholder="用于接收电子保单等后续服务">
+            <input v-model="EmailData" maxlength="30" type="text" placeholder="用于接收电子保单等后续服务">
           </div>
         </li>
       </ul>
@@ -80,7 +80,7 @@
             <p>手机号码</p>
           </div>
           <div class="tb_box_date_two">
-            <input v-model="phoneNm" type="text" placeholder="请输入">
+            <input v-model="phoneNm" maxlength="50" type="text" placeholder="请输入">
           </div>
         </li>
         <li class="tb_box_li hasline">
@@ -89,22 +89,22 @@
             <div>
               <input type="number" v-model="vcCode" placeholder="请输入" oninput="if(value.length>6)value=value.slice(0,6)" >
             </div>
-            <p @click="sendtepyFn">发送验证码</p>
+            <button :disabled="isSendBtn" @click="sendtepyFn" >{{ sendData }}</button>
           </div>
         </li>
       </ul>
-      <p class="tb_box_title">验证码</p>
+      <p class="tb_box_title">服务方式</p>
       <ul class="tb_box_content">
         <li class="tb_box_li">
           <p>续期缴费成功通知方式</p>
-          <div class="tb_box_date three">
-            <p>短信</p>
+          <div class="tb_box_date">
+            <p style="color: #333;padding:0;">短信</p>
           </div>
         </li>
         <li class="tb_box_li hasline">
           <p>各类通知书查询方式</p>
-          <div class="tb_box_date three">
-              <p>自助查询</p>
+          <div class="tb_box_date">
+              <p style="color: #333;padding:0;">自助查询</p>
           </div>
         </li>
       </ul>
@@ -165,34 +165,34 @@
     <van-popup class="occupation_box" v-model="isShowAll" position="right" :overlay="true">
       <div class="occupation_style">
         <ul class="occupation_list">
-          <li  v-for="(item, index) in alloccupation" :key="index" :class="item.classStyle">
+          <li  v-for="(item, index) in alloccupation" :key="index" :class="item.classStyle" @click="selectJob(index)">
             <p>{{ item.occupationName }}</p>
           </li>
         </ul>
-        <ul class="occupation_ul" v-if="isBigClass">
+        <ul class="occupation_ul occupation_ul_two" v-if="isBigClass">
           <li v-for="(occupationItem, index) in alloccupationData" :key="index" @click="bigClassFn(index)">
             <div class="occuption_content">
-              <hgroup>{{ occupationItem.bigClass }}</hgroup>
+              <hgroup>{{ occupationItem.job_name }}</hgroup>
             </div>
             <!-- <div class="occuption_img">
               <img v-if="occupationData.isChecked" :src="selectIconImga" alt="">
             </div> -->
           </li>
         </ul>
-        <ul class="occupation_ul" v-if="isCenterClass">
+        <ul class="occupation_ul occupation_ul_two" v-if="isCenterClass">
           <li v-for="(occupationItem, index) in centerClassName" :key="index" @click="centerClassFn(index)">
             <div class="occuption_content">
-              <hgroup>{{ occupationItem.centerClass }}</hgroup>
+              <hgroup>{{ occupationItem.job_name }}</hgroup>
             </div>
             <!-- <div class="occuption_img">
               <img v-if="occupationData.isChecked" :src="selectIconImga" alt="">
             </div> -->
           </li>
         </ul>
-        <ul class="occupation_ul" v-if="isMinClass">
+        <ul class="occupation_ul occupation_ul_two" v-if="isMinClass">
           <li v-for="(occupationItem, index) in minClassName" :key="index" @click="minClassFn(index)">
             <div class="occuption_content">
-              <hgroup>{{ occupationItem.minClass }}</hgroup>
+              <hgroup>{{ occupationItem.job_name }}</hgroup>
             </div>
             <div class="occuption_img">
               <img v-if="occupationItem.minClassChecked" :src="selectIconImga" alt="">
@@ -208,17 +208,24 @@
 <script>
 import { mapActions } from "vuex";
 import alertWrong from "../components/alertWrong.vue";
+import { Toast } from "vant";
 export default {
   data() {
     return {
+      sendData: "发送验证码", //发送验证码
+      isSendBtn: false,
+      addressData: "", //详细地址
       plicyName: "", //客户姓名
       plicyCardNm: "", //客户证件号码
       phoneNm: "", //手机号码
       zipData: "", //邮政编码
       EmailData: "", //电子邮箱
       vcCode: "", //验证码
+      vcCodeNow: "",
       menorwomen: true, //男女选择
       sexMF: "M", //男是M 女是F
+      adsexMFOne: "", //性别
+      adsexMFTwo: "", //性别
       phShwoDate: false, //时间日期插件
       phcurrentDate: new Date(), //时间插件
       phmaxDate: new Date(),
@@ -247,17 +254,20 @@ export default {
         //常用职业
         {
           internal: "内勤",
-          interCode: "（一般-机关团体公司,010101）",
+          interCode: "（一般-机关团体公司）",
+          interCodeTwo: "010101",
           isChecked: false
         },
         {
           internal: "外勤",
-          interCode: "（一般-机关团体公司,010102）",
+          interCode: "（一般-机关团体公司）",
+          interCodeTwo: "010102",
           isChecked: false
         },
         {
           internal: "教师",
-          interCode: "（文教机关-教育机构,140101）",
+          interCode: "（文教机关-教育机构）",
+          interCodeTwo: "140101",
           isChecked: false
         }
       ],
@@ -311,6 +321,13 @@ export default {
       ],
       nowAddress: false, //是否显示地区
       nowAddressData: "请选择", //是否显示地区
+      taxPlaceCode: "",
+      provinceName: "",
+      provinceCode: "",
+      cityName: "",
+      cityCode: "",
+      districtName: "",
+      districtCode: "",
       //所在地区
       AddressDataListTwo: {
         province_list: {
@@ -319,22 +336,46 @@ export default {
           350000: "福建省"
         },
         city_list: {
-          310000: "市辖区、县",
+          310100: "市辖区、县",
           320500: "苏州市",
-          350100: "福州市"
+          350100: "福州市",
+          350200: "厦门市",
+          350300: "莆田市",
+          350400: "三明市",
+          350500: "泉州市",
+          350600: "漳州市",
+          350700: "南平市",
+          350800: "龙岩市",
+          350900: "宁德市"
         },
         county_list: {
-          320505: "虎丘区"
+          320599: "苏州工业园区"
         }
       }
     };
   },
   components: { alertWrong },
+  mounted() {
+    this.saveContent();
+  },
   methods: {
     ...mapActions({
       sendTepy: "SENDTEPY", //答题提交答案页面
-      policyholderFn: "POLICYHOLDER" //投保人信息录入提交
+      policyholderFn: "POLICYHOLDER", //投保人信息录入提交
+      getJobCode: "GETJOBCODE" //投保人信息录入提交
     }),
+    adsexMFN(num) {
+      if (num == "1") {
+        this.adsexMF = "M";
+        this.adsexMFOne = "sex_checked";
+        this.adsexMFTwo = "";
+      } else if (num == "2") {
+        this.adsexMF = "F";
+        this.adsexMFOne = "";
+        this.adsexMFTwo = "sex_checked";
+      }
+      console.log(this.adsexMF);
+    },
     //常用职业选择方法
     selectCommon(index) {
       for (let item of this.inCommonUseOccupation) {
@@ -350,7 +391,24 @@ export default {
           }
         }
       }
+      this.jobCode = this.inCommonUseOccupation[index].interCodeTwo;
       this.isShowOccupation = false;
+    },
+    //自动填写生日
+    birthdayContent() {
+      this.phbirthdayData =
+        this.plicyCardNm.slice(6, 10) +
+        "-" +
+        this.plicyCardNm.slice(10, 12) +
+        "-" +
+        this.plicyCardNm.slice(12, 14);
+        console.log(this.plicyCardNm.slice(16, 17)%2)
+        if(this.plicyCardNm.slice(16, 17)%2 == '0'){
+          this.adsexMFN(2)
+        }else{
+          this.adsexMFN(1)
+        }
+        
     },
     //查看全部职业
     lookAll() {
@@ -360,12 +418,24 @@ export default {
       this.isShowOccupation = false;
       this.isShowAll = true;
       this.isMinClass = false; //隐藏小类
+      this.isCenterClass = false; //隐藏中类
       this.isBigClass = true; //显示大类
       //  清楚小类的下横线
       for (let item of this.alloccupation) {
         item.classStyle = "";
       }
       this.alloccupation[0].classStyle = "checkedSelect";
+      let jobCodeData = new FormData();
+      jobCodeData.append("level", "1");
+      jobCodeData.append("jobName", "");
+      this.getJobCode({
+        jobCodeData,
+        successCallback: result => {
+          this.alloccupationData = result;
+          // this.$router.push({ path: "/buypage" })
+        },
+        failCallback: () => {}
+      });
     },
     //点击大类的方法
     bigClassFn(mun) {
@@ -377,7 +447,16 @@ export default {
       this.alloccupation[1].classStyle = "checkedSelect";
       this.isBigClass = false;
       this.isCenterClass = true;
-      this.centerClassName = this.alloccupationData[mun].centerClassList;
+      let jobCodeData = new FormData();
+      jobCodeData.append("level", "2");
+      jobCodeData.append("jobName", this.alloccupationData[mun].job_name);
+      this.getJobCode({
+        jobCodeData,
+        successCallback: result => {
+          this.centerClassName = result;
+        },
+        failCallback: () => {}
+      });
     },
     //中类的方法「
     centerClassFn(muntwo) {
@@ -389,30 +468,72 @@ export default {
       this.alloccupation[2].classStyle = "checkedSelect";
       this.isCenterClass = false;
       this.isMinClass = true;
-      this.minClassName = this.alloccupationData[this.bigMun].centerClassList[
-        muntwo
-      ].minClassList;
+      let jobCodeData = new FormData();
+      jobCodeData.append("level", "3");
+      jobCodeData.append("jobName", this.centerClassName[muntwo].job_name);
+      this.getJobCode({
+        jobCodeData,
+        successCallback: result => {
+          this.minClassName = result;
+        },
+        failCallback: () => {}
+      });
     },
     //小类的方法
     minClassFn(munthree) {
       //每次点击小类，清除其他类
-      for (let item of this.alloccupationData[this.bigMun].centerClassList[
-        this.centerMun
-      ].minClassList) {
+      for (let item of this.minClassName) {
         item.minClassChecked = false;
       }
-      this.alloccupationData[this.bigMun].centerClassList[
-        this.centerMun
-      ].minClassList[munthree].minClassChecked = true; //勾选
+      this.minClassName[munthree].minClassChecked = true; //勾选
       //给页面上面复制选择的职业
-      this.occuptionName = this.alloccupationData[this.bigMun].centerClassList[
-        this.centerMun
-      ].minClassList[munthree].minClass;
+      this.occuptionName = this.minClassName[munthree].job_name;
+      this.jobCode = this.minClassName[munthree].job_code;
       this.isShowAll = false; //全职业隐藏
+    },
+    //职业大类中类小类切换
+    selectJob(index) {
+      console.log(index);
+
+      if (index == "1") {
+        if (this.centerClassName == "") {
+          return false;
+        }
+        for (let item of this.alloccupation) {
+          item.classStyle = "";
+        }
+        this.isBigClass = false;
+        this.isCenterClass = true;
+        this.isMinClass = false; //隐藏小类
+        this.alloccupation[1].classStyle = "checkedSelect";
+      }
+      if (index == "0") {
+        // if (this.minClassName == "") {
+        //   return false;
+        // }
+        for (let item of this.alloccupation) {
+          item.classStyle = "";
+        }
+        this.isMinClass = false; //隐藏小类
+        this.isCenterClass = false; //隐藏中类
+        this.isBigClass = true; //显示大类
+        this.alloccupation[0].classStyle = "checkedSelect";
+      }
+      if (index == "2") {
+        if (this.minClassName == "") {
+          return false;
+        }
+        for (let item of this.alloccupation) {
+          item.classStyle = "";
+        }
+        this.isMinClass = true; //隐藏小类
+        this.isCenterClass = false; //隐藏中类
+        this.isBigClass = false; //显示大类
+        this.alloccupation[2].classStyle = "checkedSelect";
+      }
     },
     //地址选择方法
     addressFn(item) {
-      console.log(item);
       if (item[0].name == "选择省份") {
         return false;
       }
@@ -424,6 +545,14 @@ export default {
       }
       this.nowAddressData =
         item[0].name + " " + item[1].name + " " + item[2].name;
+      this.taxPlaceCode =
+        item[0].code + "," + item[1].code + "," + item[2].code;
+      this.provinceName = item[0].name;
+      this.provinceCode = item[0].code;
+      this.cityName = item[1].name;
+      this.cityCode = item[1].code;
+      this.districtName = item[2].name;
+      this.districtCode = item[2].code;
       this.nowAddress = false;
     },
     //地址选择方法取消
@@ -441,46 +570,87 @@ export default {
     },
     //时间插件确认按钮
     phdateFn(item) {
-      this.phbirthdayData = item.toISOString().slice(0, 10);
-      if (this.sexMF == "M") {
-        if (
-          new Date().getFullYear() - item.getFullYear() > 60 ||
-          new Date().getFullYear() - item.getFullYear() < 16
-        ) {
-          this.$refs.alertFn.isworngFn("被保险人(男)年龄须为16周岁-60周岁");
-          this.phbirthdayData = "";
-          return false;
-        }
-      } else {
-        if (
-          new Date().getFullYear() - item.getFullYear() > 55 ||
-          new Date().getFullYear() - item.getFullYear() < 16
-        ) {
-          this.$refs.alertFn.isworngFn("被保险人(女)年龄须为16周岁-55周岁");
-          this.phbirthdayData = "";
-          return false;
-        }
+      let month = item.getMonth() - 0 + 1;
+      if (month < 10) {
+        month = "0" + month;
       }
-
-      // this.phbirthdayData = item.toISOString().slice(0, 10);
+      let today = item.getDate();
+      if (today < 10) {
+        today = "0" + today;
+      }
+      this.phbirthdayData = item.getFullYear() + "-" + month + "-" + today;
+      // if (this.sexMF == "M") {
+      //   if (
+      //     new Date().getFullYear() - item.getFullYear() > 60 ||
+      //     new Date().getFullYear() - item.getFullYear() < 16
+      //   ) {
+      //     this.$refs.alertFn.isworngFn("被保险人(男)年龄须为16周岁-60周岁");
+      //     this.phbirthdayData = "";
+      //     return false;
+      //   }
+      // } else {
+      //   if (
+      //     new Date().getFullYear() - item.getFullYear() > 55 ||
+      //     new Date().getFullYear() - item.getFullYear() < 16
+      //   ) {
+      //     this.$refs.alertFn.isworngFn("被保险人(女)年龄须为16周岁-55周岁");
+      //     this.phbirthdayData = "";
+      //     return false;
+      //   }
+      // }
       this.phShwoDate = false;
     },
     //时间插件确认按钮身份证时间
     ltdateFn(item) {
-      this.identityTimeData = item.toISOString().slice(0, 10);
+      let month = item.getMonth() - 0 + 1;
+      if (month < 10) {
+        month = "0" + month;
+      }
+      let today = item.getDate();
+      if (today < 10) {
+        today = "0" + today;
+      }
+      this.identityTimeData = item.getFullYear() + "-" + month + "-" + today;
       this.ltShwoDate = false;
+    },
+    miuFnOne(miu) {
+      let miuFn = setTimeout(() => {
+        miu--;
+        this.sendData = "消息发送中(" + miu + ")";
+        if (miu == 1) {
+          return false;
+        }
+        this.miuFnOne(miu);
+      }, 1000);
     },
     //发送验证码
     sendtepyFn() {
       let openidList = JSON.parse(window.localStorage.getItem("openidList"));
       let tepagentB = JSON.stringify(openidList.openId);
-      console.log(this.phoneNm);
+      if (this.phoneNm == "") {
+        this.$refs.alertFn.isworngFn(" 手机号码不能为空！");
+        return false;
+      }
+      if (!this.$toolsTwo.phoneFn(this.phoneNm)) {
+        this.$refs.alertFn.isworngFn(" 手机号码格式不对！");
+        return false;
+      }
+      this.isSendBtn = true;
+      this.miuFnOne(60);
+
+      setTimeout(() => {
+        this.sendData = "重新发送";
+        this.isSendBtn = false;
+      }, 60000);
       let sendTEPYzmData = new FormData();
       sendTEPYzmData.append("phoneNm", this.phoneNm);
       sendTEPYzmData.append("openId", tepagentB);
       this.sendTepy({
         sendTEPYzmData,
-        successCallback: () => {},
+        successCallback: result => {
+          this.vcCodeNow = result;
+          this.vcCode = result;
+        },
         failCallback: () => {}
       });
     },
@@ -498,10 +668,10 @@ export default {
         this.$refs.alertFn.isworngFn(" 证件号码不能为空！");
         return false;
       }
-      // if(!this.$toolsTwo.codeCrad(this.plicyCardNm)){
-      //   this.$refs.alertFn.isworngFn(' 证件号码格式不对！')
-      //   return false
-      // }
+      if (!this.$toolsTwo.codeCrad(this.plicyCardNm)) {
+        this.$refs.alertFn.isworngFn(" 证件号码格式不对！");
+        return false;
+      }
       if (this.identityTimeData == "" || this.identityTimeData == "请选择") {
         this.$refs.alertFn.isworngFn(" 证件有效期不能为空！");
         return false;
@@ -510,44 +680,158 @@ export default {
         this.$refs.alertFn.isworngFn(" 出生日期不能为空！");
         return false;
       }
+      if (this.adsexMF == "") {
+        this.$refs.alertFn.isworngFn(" 请选择性别！");
+        return false;
+      }
       if (this.occuptionName == "" || this.occuptionName == "请选择") {
         this.$refs.alertFn.isworngFn(" 职业不能为空！");
         return false;
       }
+      if (this.nowAddressData == "" || this.nowAddressData == "请选择") {
+        this.$refs.alertFn.isworngFn(" 所在地区不能为空！");
+        return false;
+      }
+      if (this.addressData == "" || this.addressData == "请选择") {
+        this.$refs.alertFn.isworngFn(" 所在输入地区不能为空！");
+        return false;
+      }
+      if (this.addressData.length < 5) {
+        this.$refs.alertFn.isworngFn(" 所在地区输入不能少于5个字！");
+        return false;
+      }
+      if (this.zipData == "") {
+        this.$refs.alertFn.isworngFn(" 邮政编码不能为空！");
+        return false;
+      }
+      if (!this.$toolsTwo.zipFn(this.zipData)) {
+        this.$refs.alertFn.isworngFn(" 邮政编码格式不对！");
+        return false;
+      }
+      if (this.EmailData == "") {
+        this.$refs.alertFn.isworngFn(" 邮箱不能为空！");
+        return false;
+      }
+      if (!this.$toolsTwo.emailFn(this.EmailData)) {
+        this.$refs.alertFn.isworngFn(" 邮箱格式不对！");
+        return false;
+      }
+      if (this.phoneNm == "") {
+        this.$refs.alertFn.isworngFn(" 手机号码不能为空！");
+        return false;
+      }
+      if (this.vcCode == "") {
+        this.$refs.alertFn.isworngFn(" 验证码填不能为空！");
+        return false;
+      }
+      // if (this.vcCode != this.vcCodeNow) {
+      //   this.$refs.alertFn.isworngFn(" 验证码填写错误！");
+      //   return false;
+      // }
       console.log("--------消息通过--------");
-      return false;
+      const toast1 = Toast.loading({
+        mask: true,
+        message: "提交中...",
+        duration: 20000
+      });
+      let timeData = "";
+      if (this.identityTimeData == "长期有效") {
+        timeData = "9999-09-09";
+      } else {
+        timeData = this.identityTimeData;
+      }
+      console.log(timeData);
+
       let policyDataList = {
         realName: this.plicyName, //客户真实姓名
         certiCode: this.plicyCardNm, //证件号码
         certiType: "1", //证件类型身份证 传1
         birthday: this.phbirthdayData, //客户生日
-        certiValidate: this.identityTimeData, //证件有效期
-        gender: this.sexMF, //客户性别
+        certiValidate: timeData, //证件有效期
+        gender: this.adsexMF, //客户性别
         jobCode: this.jobCode, //职业代码
+        jobName: this.occuptionName, //职业代码
         livingAddress: this.nowAddressData, //住所地
+        taxPlaceCode: this.taxPlaceCode, //纳税地代码
+        addressData: this.addressData, //详细地址
         zip: this.zipData, // 邮政编码
         Email: this.EmailData, //电子邮箱
         phoneNm: this.phoneNm, //手机号码
         vcCode: this.vcCode, //验证码
-        smsData: "1", //短信通知
-        selfHelp: "1" //自主查询
+        smsData: "3", //短信通知
+        selfHelp: "1", //自主查询
+        provinceName: this.provinceName,
+        provinceCode: this.provinceCode,
+        cityName: this.cityName,
+        cityCode: this.cityCode,
+        districtName: this.districtName,
+        districtCode: this.districtCode
       };
       let policyDataB = JSON.stringify(policyDataList);
       window.localStorage.setItem("policyDataList", policyDataB);
       console.log(policyDataB);
+      // return false;
       let policyData = new FormData();
       policyData.append("policyData", policyDataB);
       policyData.append("messageData", messageDataListB);
       this.policyholderFn({
         policyData,
         successCallback: () => {
+          toast1.clear();
           this.$router.push({ path: "/beneficiarypag" });
         },
-        failCallback: () => {}
+        failCallback: result => {
+          toast1.clear();
+          this.$refs.alertFn.isworngFn(result);
+        }
       });
       // this.setTitle("页面标题");
       // this.$router.meta.title = '11111'
       // this.$router.push({ path: "/beneficiarypag" });
+    },
+    //保存页面数据
+    saveContent() {
+      let policyDataList = JSON.parse(
+        window.localStorage.getItem("policyDataList")
+      );
+      if (policyDataList != "" && policyDataList != null) {
+        console.log(policyDataList);
+        this.plicyName = policyDataList.realName;
+        this.plicyCardNm = policyDataList.certiCode;
+        // certiType: "1", //证件类型身份证 传1
+        this.phbirthdayData = policyDataList.birthday;
+        if (policyDataList.certiValidate == "9999-09-09") {
+          this.identityTimeData = "长期有效";
+        } else {
+          this.identityTimeData = policyDataList.certiValidate;
+        }
+        this.adsexMF = policyDataList.gender;
+        if (policyDataList.gender == "M") {
+          this.adsexMFOne = "sex_checked";
+          this.adsexMFTwo = "";
+        } else {
+          this.adsexMFOne = "";
+          this.adsexMFTwo = "sex_checked";
+        }
+        this.jobCode = policyDataList.jobCode;
+        this.occuptionName = policyDataList.jobName;
+        this.nowAddressData = policyDataList.livingAddress;
+        this.taxPlaceCode = policyDataList.taxPlaceCode;
+        this.addressData = policyDataList.addressData;
+        this.zipData = policyDataList.zip;
+        this.EmailData = policyDataList.Email;
+        this.phoneNm = policyDataList.phoneNm;
+        // this.jobCom = policyDataList.jobCom ;
+        // vcCode: this.vcCode, //验证码
+        // smsData: "3", //短信通知
+        // selfHelp: "1", //自主查询
+        this.provinceName = policyDataList.provinceName;
+        this.provinceCode = policyDataList.provinceCode;
+        this.cityName = policyDataList.cityName;
+        this.cityCode = policyDataList.cityCode;
+        this.districtName = policyDataList.districtName;
+        this.districtCode = policyDataList.districtCode;
+      }
     },
     //单页面title修改方法
     setTitle(titleName) {
@@ -604,7 +888,7 @@ export default {
       .tb_box_date {
         padding-right: 15px;
         line-height: $heightline;
-        flex: 0.8;
+        // flex: 0.8;
         .ph_date {
           line-height: $heightline;
           height: $heightline;
@@ -612,12 +896,17 @@ export default {
           width: 100%;
           font-size: $fontsize;
           background: url(../../static/img/dateicon.svg) no-repeat right center;
+          min-width: 6rem;
         }
         p {
           text-align: right;
           padding-right: 0.3rem;
           box-sizing: border-box;
           height: 1.4rem;
+          overflow-x: auto;
+          width: 100%;
+          white-space: nowrap;
+          max-width: 6.5rem;
         }
         .tb_box_select {
           line-height: $heightline;
@@ -685,11 +974,16 @@ export default {
             box-sizing: border-box;
           }
         }
-        p {
-          flex: 1;
+        button {
+          flex: 0.8;
+          text-align: right !important;
+          padding-right: 15px;
+          box-sizing: border-box;
           text-align: center;
           border-left: 1px solid #dddddd;
           color: #02ad4d;
+          background-color: transparent;
+          width: 3rem;
         }
       }
     }
@@ -761,6 +1055,10 @@ export default {
   width: 100%;
   height: 100%;
   background-color: #fff;
+  .occupation_ul_two {
+    height: 90%;
+    overflow: auto;
+  }
   .occupation_ul {
     li {
       display: flex;

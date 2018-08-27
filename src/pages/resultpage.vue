@@ -86,7 +86,7 @@ export default {
     margin: 1.35rem auto 0;
     button {
       width: 7.2rem;
-      background: #ff6a51;
+      background: #f9c567;
       box-shadow: 0 0 6px 0 #098640;
       border-radius: 5px;
       height: 1.3rem;

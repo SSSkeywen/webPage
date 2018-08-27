@@ -6,8 +6,11 @@ html { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; height: 100%;
 /* 去除iPhone中默认的input样式 */
 input[type="submit"], input[type="reset"], input[type="button"], input {-webkit-appearance: none;resize: none;}
 /* 取消链接高亮  */
-body, div, ul, li, ol, h1, h2, h3, h4, h5, h6, input, textarea, select, p, dl, dt, dd, a, img, button, form, table, th, tr, td, tbody, article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
-	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);}
+/* body, div, ul, li, ol, h1, h2, h3, h4, h5, h6, input, textarea, select, p, dl, dt, dd, a, img, button, form, table, th, tr, td, tbody, article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { */
+	/* -webkit-tap-highlight-color: rgba(0, 0, 0, 0);} */
+	/* body, div, ul, li, ol, h1, h2, h3, h4, h5, h6, input, textarea, select, p, dl, dt, dd, a, img, button, form, table, th, tr, td, tbody, article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section:hover{
+		background: rgba(0,0,0,.1)
+	} */
 /* 初始化 */
 body,textarea,input,button,select,keygen,legend{outline:0;}
 *{ margin: 0; padding: 0; border: none; }
@@ -22,3 +25,34 @@ img { border: none;vertical-align:middle; }
 html,body{height:100%;}
 a,a:link,a:visited{text-decoration:none;outline:0 none}
 a:hover{text-decoration:none}
+
+
+/* @charset "utf-8"; */
+/* CSS Document */
+/* html,body{height:100%;}
+html,body,h1,h2,h3,h4,h5,h6,div,dl,dt,dd,ul,ol,li,p,blockquote,pre,hr,figure,table,caption,th,td,form,fieldset,legend,input,button,textarea,menu {margin:0;padding:0; font-family:"微软雅黑";}
+table {border-collapse:collapse;border-spacing:0;}
+b,i,strong,em{font-style: normal; font-weight: normal; font-size:14px;}
+caption,th {text-align:left;font-weight:normal;}
+form,img,input {border:0;}
+ul,li {list-style:none;}
+textarea {overflow:auto;resize:none;}
+label {cursor:default;}
+h1,h2,h3,h4,h5,h6,em,strong,b{font-weight:normal;}
+del,ins,u,s,a,a:hover{text-decoration:none;}
+select{height:22px;line-height:18px; padding:2px 0;}
+body,textarea,input,button,select,keygen,legend{color:#666;outline:0;}
+input{border:none;}
+img {vertical-align:middle}
+.clearfix:after{visibility: hidden;display: block;font-size: 0;content:" ";clear: both;height: 0;}
+.clearfix{ *zoom:1;}
+a,a:link,a:visited{text-decoration:none;outline:0 none}
+a:hover{text-decoration:none}
+.clearfix:after {visibility: hidden;display: block;font-size: 0;content: " ";clear: both;height: 0;}
+.clearfix {*zoom:1;}
+.bg-tips{background:relative;}
+input[type="text"]{padding:3px;border:1px solid #e0e0e1;}
+button{cursor:pointer;border-radius:2px;}
+.overflow{overflow:hidden;}
+.fl{float:left;}
+.fr{float:right;} */

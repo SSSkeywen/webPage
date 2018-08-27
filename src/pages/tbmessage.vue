@@ -1,7 +1,7 @@
 <template>
   <div class="box">
     <div class="tb_box">
-      <p class="tb_box_title">投保信息</p>
+      <p class="tb_box_title" style="margin-top:0;">投保信息</p>
       <ul class="tb_box_content">
         <li class="tb_box_li">
           <p>投保人出生日期</p>
@@ -17,14 +17,14 @@
         </li>
         <li class="tb_box_li hasline">
           <p>交费方式</p>
-          <div class="tb_box_date three">
-            <p @click="isWay = !isWay" class="tb_box_date three">{{ wayData }}</p>
+          <div class="tb_box_date">
+            <p class="" style="color:#333;">{{ wayData }}</p>
           </div>
         </li>
         <li class="tb_box_li hasline">
           <p>交费金额</p>
           <div class="tb_box_date_two">
-            <input v-model="numbermony" type="number" @change="numAFn" placeholder="请输入">&nbsp;&nbsp;元
+            <input v-model="numbermony" oninput="if(value.length>30)value=value.slice(0,30)" v-focus="true" type="number" @change="numAFn" placeholder="请输入">&nbsp;&nbsp;元
           </div>
         </li>
       </ul>
@@ -39,7 +39,7 @@
             <p class="tb_premium_num"><input type="number" disabled v-model="numA" placeholder="0" name="" id=""> 元</p>
           </div>
           <div class="tb_premium_right">
-            <p><input type="number" v-model="numAPer" oninput="if(value.length>2)value=value.slice(0,2)" @change="numAFn" placeholder="0" name="" id=""> %</p>
+            <p><input type="number" v-model="numAPer" oninput="if(value.length>3)value=value.slice(0,3)" @change="numAFn" placeholder="0" name="" id=""> %</p>
           </div>
         </li>
         <li class="tb_box_li hasline">
@@ -47,14 +47,14 @@
             <div class="tb_premium_icon">
               <div><img :src="selectIconImgb" alt="" srcset=""></div>
             </div>
-            <p class="tb_premium_a">税延养老B款</p>
+            <p class="tb_premium_a">税延养老B1款</p>
             <p class="tb_premium_num"><input type="number" disabled v-model="numB" placeholder="0" name="" id=""> 元</p>
           </div>
           <div class="tb_premium_right">
-            <p><input type="number" v-model="numBPer" oninput="if(value.length>2)value=value.slice(0,2)" @change="numAFn" placeholder="0" name="" id=""> %</p>
+            <p><input type="number" v-model="numBPer" oninput="if(value.length>3)value=value.slice(0,3)" @change="numAFn" placeholder="0" name="" id=""> %</p>
           </div>
         </li>
-        <li class="tb_box_li hasline">
+        <!-- <li class="tb_box_li hasline">
           <div class="tb_premium_left">
             <div class="tb_premium_icon" @click="isSelectFn">
               <div><img v-if="isSelect" :src="selectIconImga" alt="" srcset=""></div>
@@ -65,13 +65,13 @@
           <div class="tb_premium_right">
             <p><input type="number" :disabled="!isSelect" oninput="if(value.length>2)value=value.slice(0,2)" @change="numAFn" placeholder="0" v-model="numCPer" name="" id=""> %</p>
           </div>
-        </li>
-        <li class="tb_box_li hasline">
+        </li> -->
+        <!-- <li class="tb_box_li hasline">
           <p>C款投资时间</p>
-          <div class="tb_box_date three" style="flex:0.9">
-            <p @click="isInvestTime = !isInvestTime" style="padding-right:15px;">{{ investTimeDa }}</p>
+          <div class="tb_box_date" style="flex:0.9">
+            <p style="color:#333;">{{ investTimeDa }}</p>
           </div>
-        </li>
+        </li> -->
       </ul>
       <p class="tb_box_title">个税信息</p>
       <p class="tb_min_title">个税信息请咨询所在单位人力资源部</p>
@@ -79,7 +79,10 @@
         <li class="tb_box_li">
           <p>单位名称</p>
           <div class="tb_box_date">
-            <p>太平人寿保险有限公司</p>
+           
+            <p class="tb_sw_name"><input type="text" maxlength="30" v-model="jobCom" placeholder="请输入"></p>
+         
+            <!-- <p>太平人寿保险有限公司</p> -->
           </div>
         </li>
         <li class="tb_box_li hasline">
@@ -92,7 +95,7 @@
           <p>个税征收方式</p>
           <div class="tb_box_date three">
             <div class="tb_box_date three">
-              <p @click="isShowTax = !isShowTax" class="">{{ taxStyle }}</p>
+              <p @click="isShowTax = !isShowTax" class="" style="color:#333;">{{ taxStyle }}</p>
             </div>
           </div>
         </li>
@@ -105,7 +108,7 @@
         <li class="tb_box_li hasline">
           <p>纳税分局名称</p>
           <div class="tb_box_date">
-            <p class="tb_sw_name"><input type="text" v-model="taxBureauName" placeholder="请输入"></p>
+            <p class="tb_sw_name"><input type="text" maxlength="30" v-model="taxBureauName" placeholder="请输入"></p>
           </div>
         </li>
       </ul>
@@ -115,7 +118,7 @@
         <img v-if="isAlready" :src="selectIconImga" alt="">
       </div>
       <p class="tb_tk_content">
-        <span>我已阅读<a>《投保须知》</a>、<a>《保险条款》</a></span>
+        <span>我已阅读<a @click="openClause(2)">《投保须知》</a>、<a @click="openClause(1)">《保险条款》</a>、<a @click="openClause(3)">《投保提示书》</a></span>
       </p>
     </div>
     <div class="tb_button">
@@ -155,22 +158,25 @@
       @confirm="suerFn"
     >
       <div class="code_style">
+        <van-icon name="close" class="code-close-icon" @click="codeClose"/>
         <hgroup class="code_title">请输入</hgroup>
+        
+        
+        <div class="code_radio" :class="checkedSe=='2'?'code_checked':''" @click="selectCode(2)">
+          <div>
+            <img v-if="checkedSe=='2'" :src="selectIconImga" alt="" srcset="">
+          </div>
+          <p>纳税人识别号</p>
+        </div>
+        <p>或</p>
         <div class="code_radio" :class="checkedSe=='1'?'code_checked':''" @click="selectCode(1)">
           <div>
             <img v-if="checkedSe=='1'" :src="selectIconImga" alt="" srcset="">
           </div>
           <p>统一社会信用代码</p>
         </div>
-        <p>或</p>
-        <div class="code_radio" :class="checkedSe=='2'?'code_checked':''" @click="selectCode(2)">
-          <div>
-            <img v-if="checkedSe=='2'" :src="selectIconImga" alt="" srcset="">
-          </div>
-          <p>税务登记号</p>
-        </div>
         <div class="code_input">
-          <input maxlength="20" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')"  v-model="taxNumber" type="text" placeholder="请输入统一社会信用代码">
+          <input maxlength="20" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')"  v-model="taxNumber" type="text" placeholder="请输入">
         </div>
       </div>
     </van-dialog>
@@ -181,6 +187,7 @@
       @confirm="questionFn(1)"
       @cancel="questionFn(2)"
       title="风险提示"
+      cancelButtonText="返回"
       confirm-button-text="继续"
     >
     <div class="tips_enter">
@@ -189,26 +196,33 @@
     </div>
     </van-dialog>
     <!-- 报错弹出层 -->
-    <van-popup v-model="isShowWrong" position="top" :overlay="false">
+    <!-- <van-popup v-model="isShowWrong" position="top" :overlay="false">
       <div class="alerWrongStyle">
         {{ wrongData }}
       </div>
-    </van-popup>
+    </van-popup> -->
+    <alertWrong ref="alertFn"></alertWrong>
   </div>
 </template>
 
 <script>
 import { mapActions } from "vuex";
+import { Toast } from "vant";
+import alertWrong from "../components/alertWrong.vue";
 export default {
   data() {
     return {
+      // clauseOne: "../../static/pdf/rsbxtbtss20170424.pdf",
+      // isClause: false, //是否显示条款
       isShowWrong: false, //报错弹出层
       wrongData: "", //报错内容
-      organCode1: "", //税务登记号
+      organCode1: "", //纳税人识别号
       organCode4: "", //社会信用代码
-      taxPayerType: "", //个税征收方式代码
+      taxPayerType: "1", //个税征收方式代码
       taxPlaceCode: "", //纳税地代码
       taxBureauName: "", //纳税分局名称
+      jobCom: "", //单位名称
+
       isEnterQuestion: false, //是否进入问答页面
       selectIconImga: require("../../static/img/checkedicon.png"), //绿色小对勾
       selectIconImgb: require("../../static/img/unclickicon.png"), //灰色小对勾
@@ -217,25 +231,26 @@ export default {
       isAddress: false, //纳税地方式
       iscredit: false, //信用代码是否显示
       isShowTax: false, //是否显示个税方式
-      taxStyle: "代扣代缴", //个税方式默认
-      checkedSe: 1, // 信用代码或税务登记
-      taxNumber: "", //税务登记号码
-      taxName: "统一社会信用代码", //信用号码或税务号码
+      taxStyle: "单位代扣代缴", //个税方式默认
+      checkedSe: 2, // 信用代码或税务登记
+      taxNumber: "", //纳税人识别号码
+      taxName: "纳税人识别号", //信用号码或税务号码
+      taxCode: "2", //
       taxNumberTwo: "请输入",
       isWay: false, //月交年交
       isWayCode: "4", //
       showDate: false, //时间插件是否展示
-      currentDate: new Date(), //时间插件
+      currentDate: new Date(1980, 0, 1), //时间插件
       maxDate: new Date(),
       minDate: new Date(1900, 1, 1),
       birthdayData: "", //出生日期
       wayData: "月交", //交费方式
       numbermony: "", //交费金额
-      numA: "", //税延A款
+      numA: 0, //税延A款
       numAPer: "", //税延A款百分比
-      numB: "", //税延B款
+      numB: 0, //税延B款
       numBPer: "", //税延B款百分比
-      numC: "", //税延C款
+      numC: 0, //税延C款
       numCPer: "", //税延C款百分比
       isSelectClickFn: true,
       actions: [
@@ -243,21 +258,16 @@ export default {
           name: "月交",
           callback: this.onClick,
           value: "4"
-        },
-        {
-          name: "年交",
-          callback: this.onClick,
-          value: "2"
         }
       ],
       taxData: [
         {
-          name: "代扣代缴",
+          name: "单位代扣代缴",
           value: "1",
           callback: this.taxClick
         },
         {
-          name: "自行申报",
+          name: "个人自行申报",
           value: "2",
           callback: this.taxClick
         }
@@ -267,14 +277,12 @@ export default {
       //投资时间的两种方式
       isInvestTime: false, //投资时间选择
       investTimeDa: "承保日后的下一个交易日",
+      investTimeCode: "1",
       investTimeData: [
         {
           name: "承保日后的下一个交易日",
-          callback: this.investTimeFn
-        },
-        {
-          name: "犹豫期结束后的下一个交易日",
-          callback: this.investTimeFn
+          callback: this.investTimeFn,
+          value: "1"
         }
       ],
       //地址选择310000-上海市、320000-江苏省、350000-福建省。
@@ -282,6 +290,14 @@ export default {
       // 级下拉框选择“江苏省”时，市级下拉框只能选：320500-苏州市,
       // 且新增区级下拉框只能选：320505-虎丘区。省级下拉框选择“福建省”时，
       // 市级下拉框只能选：350100-福州市。
+      provinceName: "",
+      provinceCode: "",
+      cityName: "",
+      cityCode: "",
+      districtName: "",
+      districtCode: "",
+      agentid: "",
+      OrganId: "",
       AddressDataList: {
         province_list: {
           310000: "上海市",
@@ -289,23 +305,38 @@ export default {
           350000: "福建省"
         },
         city_list: {
-          310000: "市辖区、县",
+          310100: "市辖区、县",
           320500: "苏州市",
-          350100: "福州市"
+          350100: "福州市",
+          350200: "厦门市",
+          350300: "莆田市",
+          350400: "三明市",
+          350500: "泉州市",
+          350600: "漳州市",
+          350700: "南平市",
+          350800: "龙岩市",
+          350900: "宁德市"
         },
         county_list: {
-          320505: "虎丘区"
+          320599: "苏州工业园区"
         }
       }
     };
   },
+  components: { alertWrong },
   mounted() {
     this.goHome();
+    this.saveContent();
+    this.crsExempt({
+      successCallback: () => {},
+      failCallback: () => {}
+    });
   },
   methods: {
     ...mapActions({
       homeDataFn: "HOMEDATA",
-      checkptFn: "CHECKPT" //投保信息录入接口方法
+      checkptFn: "CHECKPT", //投保信息录入接口方法
+      crsExempt: "CRS_EXEMPT" //投保信息录入接口方法
     }),
     goHome() {
       this.homeDataFn({
@@ -316,10 +347,70 @@ export default {
     // 统一社会信用代码函数
     suerFn() {
       console.log(this.taxNumber);
-      // if (this.taxNumber == "") {
-      //   this.taxNumber = "请输入";
+      if (this.taxNumber == "" || this.taxNumber == "请输入") {
+        this.$refs.alertFn.isworngFn(" 请输入社会信用代码或纳税人识别号");
+        this.iscredit = true;
+        return false;
+      }
+
+      if (this.checkedSe == "2") {
+        
+        if (
+          this.taxNumber.length != 15 &&
+          this.taxNumber.length != 18 &&
+          this.taxNumber.length != 20
+        ) {
+          this.$refs.alertFn.isworngFn(
+              "纳税人识别码需由15位、18位或者20位的阿拉伯数字或者英文字母组成！"
+            );
+            this.iscredit = true;
+            return false;
+        }
+        
+          // console.log(this.taxNumber.length)
+          // console.log(this.$toolsTwo.nsrCodeFn(this.taxNumber))
+          if (!this.$toolsTwo.nsrCodeFn(this.taxNumber)) {
+            this.$refs.alertFn.isworngFn(
+              "纳税人识别码需由15位、18位或者20位的阿拉伯数字或者英文字母组成！"
+            );
+            this.iscredit = true;
+            return false;
+          }
+        // } else {
+        //   this.$refs.alertFn.isworngFn(
+        //     "纳税人识别码需由15位、18位或者20位的阿拉伯数字或者英文字母组成！"
+        //   );
+        //   this.iscredit = true;
+        //   return false;
+        // }
+      } else if (this.checkedSe == "1") {
+        if (!this.$toolsTwo.shCodeFn(this.taxNumber)) {
+          this.$refs.alertFn.isworngFn(
+            "统一社会信用代码需由18位阿拉伯数字或者大写英文字母组成！"
+          );
+          this.iscredit = true;
+          return false;
+        }
+      }
+
+      // if (this.taxNumber.length < 15 || this.taxNumber.length > 20) {
+      //   this.$refs.alertFn.isworngFn(
+      //     "输入社会信用代码或纳税人识别号的格式不正确"
+      //   );
+      //   this.iscredit = true;
+      //   return false;
       // }
+
+      //
+
       this.taxNumberTwo = this.taxNumber;
+      if (this.checkedSe == "2") {
+        this.taxName = "纳税人识别号";
+        this.taxCode = "2";
+      } else {
+        this.taxName = "统一社会信用代码";
+        this.taxCode = "1";
+      }
       if (this.taxName == "统一社会信用代码") {
         this.organCode4 = this.taxNumber;
         this.organCode1 = "";
@@ -327,25 +418,19 @@ export default {
         this.organCode1 = this.taxNumber;
         this.organCode4 = "";
       }
-      if (this.taxNumberTwo == "" || this.taxNumberTwo == "请输入") {
-        this.isworngFn("请输入社会信用代码或税务登记号");
-        this.iscredit = true;
-        return false;
-      }
-      if(this.taxNumberTwo.length < 15 || this.taxNumberTwo.length > 20){
-        this.isworngFn("输入社会信用代码或税务登记号的格式不正确");
-        this.iscredit = true;
-        return false;
-      }
+
       // this.iscredit = true;
+    },
+    codeClose() {
+      if (this.taxName == "统一社会信用代码") {
+        this.checkedSe = "1";
+      } else {
+        this.checkedSe = "2";
+      }
+      this.iscredit = false;
     },
     selectCode(key) {
       this.checkedSe = key;
-      if (key == "1") {
-        this.taxName = "统一社会信用代码";
-      } else {
-        this.taxName = "税务登记号";
-      }
     },
     //地址选择方法
     addressFn(item) {
@@ -354,14 +439,37 @@ export default {
         return false;
       }
       if (item[1].name == "选择城市") {
-        item[1].name = "";
+        this.$refs.alertFn.isworngFn("纳税地必须到市级！");
+        return false;
       }
       if (item[2].name == "选择地区") {
         item[2].name = "";
       }
+      if (item[0].code == 310000 && item[1].code == 310100) {
+        this.agentid = "05703361612";
+        this.OrganId = "10110";
+      } else if (item[0].code == 320000) {
+        this.agentid = "05703505762";
+        this.OrganId = "11601";
+      } else if (item[0].code == 350000 && item[1].code == 350200) {
+        this.agentid = "05703578252";
+        this.OrganId = "123";
+      } else if (item[0].code == 350000) {
+        this.agentid = "05703545642";
+        this.OrganId = "12000";
+      }
+      console.log(this.OrganId + "-" + this.agentid);
+
       this.AddressData = item[0].name + " " + item[1].name + " " + item[2].name;
       this.taxPlaceCode =
-        item[0].code + " " + item[1].code + " " + item[2].code;
+        item[0].code + "," + item[1].code + "," + item[2].code;
+      this.provinceName = item[0].name;
+      this.provinceCode = item[0].code;
+      this.cityName = item[1].name;
+      this.cityCode = item[1].code;
+      this.districtName = item[2].name;
+      this.districtCode = item[2].code;
+
       this.isAddress = false;
     },
     //地址选择方法取消
@@ -390,20 +498,30 @@ export default {
     //投资时间的选择
     investTimeFn(item) {
       this.investTimeDa = item.name;
+      this.investTimeCode = item.value;
       this.isInvestTime = false;
     },
     //时间插件确认按钮
     dateFn(item) {
-      console.log(new Date().getFullYear() - item.getFullYear());
-      this.birthdayData = item.toISOString().slice(0, 10);
-      if (
-        new Date().getFullYear() - item.getFullYear() > 60 ||
-        new Date().getFullYear() - item.getFullYear() < 16
-      ) {
-        this.isworngFn("被保险人年龄须为16周岁-60周岁");
-        this.birthdayData = "";
-        return false;
+      let month = item.getMonth() - 0 + 1;
+      if (month < 10) {
+        month = "0" + month;
       }
+      let today = item.getDate();
+      if (today < 10) {
+        today = "0" + today;
+      }
+      this.birthdayData = item.getFullYear() + "-" + month + "-" + today;
+      // this.birthdayData = item.getFullYear()+ '-' +(item.getMonth()-0+1)+ '-' +item.getDate();
+      console.log(this.birthdayData);
+      // if (
+      //   new Date().getFullYear() - item.getFullYear() > 60 ||
+      //   new Date().getFullYear() - item.getFullYear() < 16
+      // ) {
+      //   this.isworngFn("被保险人年龄须为16周岁-60周岁");
+      //   this.birthdayData = "";
+      //   return false;
+      // }
       this.showDate = false;
       if (new Date().getFullYear() - item.getFullYear() > 55) {
         this.isSelect = false;
@@ -418,9 +536,10 @@ export default {
       if (this.isSelectClickFn) {
         this.isSelect = !this.isSelect;
       }
-      this.numC = "";
-      this.numCPer = "";
+      this.numC = 0;
+      this.numCPer = 0;
     },
+
     //产品计算
     numAFn() {
       console.log(this.numAPer);
@@ -441,130 +560,265 @@ export default {
       }
     },
     nextpage() {
+      //赵盼 计算为零
+      this.numAFn();
+      //赵盼 判断金额不为零
+      if (this.numbermony == 0 || this.numbermony == undefined) {
+        this.$refs.alertFn.isworngFn("金额不能为零");
+        return false;
+      }
+      if (this.jobCom == "" || this.jobCom == undefined) {
+        this.$refs.alertFn.isworngFn("请输入单位名称");
+        return false;
+      }
       //检查是否输入了出生日期
       if (this.birthdayData == "") {
-        this.isworngFn("请输入出生日期");
+        this.$refs.alertFn.isworngFn("请输入出生日期");
         return false;
       }
       if (this.isWayCode == "4") {
         if (this.numbermony > 1000) {
-          this.isworngFn(
-            "三款税延险年交总保费不超过12000元；月交总保费不超过1000元。"
+          this.$refs.alertFn.isworngFn(
+            "两款税延险年交总保费不超过12000元；月交总保费不超过1000元。"
           );
           return false;
         }
       } else if (this.isWayCode == "2") {
         if (this.numbermony > 12000) {
-          this.isworngFn(
-            "三款税延险年交总保费不超过12000元；月交总保费不超过1000元。"
+          this.$refs.alertFn.isworngFn(
+            "两款税延险年交总保费不超过12000元；月交总保费不超过1000元。"
           );
           return false;
         }
       }
       //判断输入的金额必须未整数
       if (!this.isInteger(this.numbermony)) {
-        this.isworngFn("三款税延险总保费100元起售，以100元为单位递增。");
+        this.$refs.alertFn.isworngFn(
+          "两款税延险总保费100元起售，以100元为单位递增。"
+        );
         return false;
       }
-      if (!this.isIntegerTwo(this.numA)) {
-        this.isworngFn("请输入税延养老A款金额且必须为正整数");
-        return false;
-      }
-      if (!this.isIntegerTwo(this.numB)) {
-        this.isworngFn("请输入税延养老B款金额且必须为正整数");
-        return false;
-      }
-      if (this.isSelect) {
-        if (!this.isIntegerTwo(this.numC)) {
-          this.isworngFn("请输入税延养老C款金额且必须为正整数");
-          return false;
-        }
-      }
+      // if (!this.isIntegerTwo(this.numA)) {
+      //   this.isworngFn("请输入税延养老A款金额且必须为正整数");
+      //   return false;
+      // }
+      // if (!this.isIntegerTwo(this.numB)) {
+      //   this.isworngFn("请输入税延养老B款金额且必须为正整数");
+      //   return false;
+      // }
+      // if (this.isSelect) {
+      //   if (!this.isIntegerTwo(this.numC)) {
+      //     this.isworngFn("请输入税延养老C款金额且必须为正整数");
+      //     return false;
+      //   }
+      // }
       //判断输入金额必须为总数
       // console.log(eval(this.numA) + eval(this.numB) + eval(this.numC))
-      if (this.isSelect) {
-        if (this.numCPer >= 50) {
-          this.isworngFn("请确认C账户的分配比例不大于50%！");
-          return false;
-        }
-        if (
-          100 !=
-          eval(this.numAPer) + eval(this.numBPer) + eval(this.numCPer)
-        ) {
-          // console.log(eval(this.numAPer) + eval(this.numBPer) + eval(this.numCPer))
-          this.isworngFn("ABC三款的分摊比例之和不等于100！");
-          return false;
-        }
-      } else {
-        if (100 != eval(this.numAPer) + eval(this.numBPer)) {
-          this.isworngFn("AB两款的分摊比例之和不等于100！");
-          return false;
-        }
+      // if (this.isSelect) {
+      //   if (this.numCPer > 50) {
+      //     this.$refs.alertFn.isworngFn("请确认C账户的分配比例不大于50%！");
+      //     return false;
+      //   }
+      //   if (this.numAPer == "") {
+      //     this.numAPer = "0";
+      //   }
+      //   if (this.numBPer == "") {
+      //     this.numBPer = "0";
+      //   }
+      //   if (this.numCPer == "") {
+      //     this.numCPer = "0";
+      //   }
+      //   if (
+      //     100 !=
+      //     eval(this.numAPer) + eval(this.numBPer) + eval(this.numCPer)
+      //   ) {
+      //     console.log(
+      //       eval(this.numAPer) + eval(this.numBPer) + eval(this.numCPer)
+      //     );
+      //     this.$refs.alertFn.isworngFn("ABC三款的分摊比例之和不等于100！");
+      //     return false;
+      //   }
+      // } else {
+      if (this.numAPer == "") {
+        this.numAPer = "0";
       }
-
-      //输入社会信用代码或税务登记号
-      if (this.taxNumberTwo == "" || this.taxNumberTwo == "请输入") {
-        this.isworngFn("请输入社会信用代码或税务登记号");
+      if (this.numBPer == "") {
+        this.numBPer = "0";
+      }
+      // if (this.numCPer == "") {
+      //   this.numCPer = "0";
+      // }
+      if (100 != eval(this.numAPer) + eval(this.numBPer)) {
+        this.$refs.alertFn.isworngFn("AB两款的分摊比例之和不等于100！");
         return false;
       }
-      if(this.organCode4.length < 15 || this.organCode4.length > 20){
-        this.isworngFn("输入社会信用代码或税务登记号的格式不正确");
+      // }
+
+      //输入社会信用代码或纳税人识别号
+      if (this.taxNumberTwo == "" || this.taxNumberTwo == "请输入") {
+        this.$refs.alertFn.isworngFn("请输入社会信用代码或纳税人识别号");
+        return false;
+      }
+      if (
+        (this.organCode4.length < 15 || this.organCode4.length > 20) &&
+        (this.organCode1.length < 15 || this.organCode1.length > 20)
+      ) {
+        this.$refs.alertFn.isworngFn(
+          "输入社会信用代码或纳税人识别号的格式不正确"
+        );
         return false;
       }
       //输入纳税地
       if (this.taxPlaceCode == "" || this.taxPlaceCode == "请输入") {
-        this.isworngFn("请选择纳税地");
+        this.$refs.alertFn.isworngFn("请选择纳税地");
         return false;
       }
       //输入纳税地
-      if (this.taxBureauName == "" || this.taxBureauName == "请输入") {
-        this.isworngFn("请输入纳税分局名称");
-        return false;
-      }
+      // if (this.taxBureauName == "" || this.taxBureauName == "请输入") {
+      //   this.isworngFn("请输入纳税分局名称");
+      //   return false;
+      // }
       //选择已经阅读
       if (!this.isAlready) {
-        this.isworngFn("选择已经阅读");
+        this.$refs.alertFn.isworngFn("请勾选我已阅读");
         return false;
       }
+      const toast1 = Toast.loading({
+        mask: true,
+        message: "加载中...",
+        duration: 20000
+      });
       // 获取页面的所有值放到一个对象中
       let messageDataList = {
         subBirthday: this.birthdayData, //出生日期
+        Charge_year: "3", // 缴费年限
         subPayMuch: this.numbermony, //交费金额
         numA: this.numA, //税延养老A款
         numAPer: this.numAPer,
         numB: this.numB, //税延养老B款
         numBPer: this.numBPer,
-        numC: this.numC, //税延养老C款
-        numCPer: this.numCPer,
-        paymentMethod:this.isWayCode,//交费方式
-        taxNumberTwo: this.taxNumberTwo, //税务登记号码值
-        organCode1: this.organCode1, //税务登记号
+        investTimeDa: this.investTimeDa, //投资时间
+        investTimeCode: this.investTimeCode, //C款产品投资时间代码
+        paymentMethod: this.isWayCode, //交费方式
+        wayData: this.wayData, //交费方式
+        taxNumberTwo: this.taxNumberTwo, //纳税人识别号码值
+        organCode1: this.organCode1, //纳税人识别号
         organCode4: this.organCode4, //社会信用代码
+        taxCodeName: this.taxName, //社会信用代码
+        taxCodeType: this.taxCode, //社会信用代码Code 信用是1 税务是2
         taxPayerType: this.taxPayerType, //个税征收方式
+        taxStyle: this.taxStyle, //个税征收方式
         taxPlaceCode: this.taxPlaceCode, //纳税地代码
-        taxBureauName: this.taxBureauName //纳税分局名称
+        AddressData: this.AddressData, //纳税地
+        taxBureauName: this.taxBureauName, //纳税分局名称
+        jobCom: this.jobCom, //单位名称jobCom
+        provinceName: this.provinceName,
+        provinceCode: this.provinceCode,
+        cityName: this.cityName,
+        cityCode: this.cityCode,
+        districtName: this.districtName,
+        districtCode: this.districtCode,
+        OrganId: this.OrganId,
+        agentid: this.agentid,
+        productList: [
+          {
+            productCode: "4013",
+            numA: this.numA, //税延养老A款
+            numAPer: this.numAPer
+          },
+          {
+            productCode: "4014",
+            numB: this.numB, //税延养老B款
+            numBPer: this.numBPer
+          }
+        ]
       };
-      
       messageDataList = JSON.stringify(messageDataList);
-      window.localStorage.setItem('messageDataList', messageDataList)
+      window.localStorage.setItem("messageDataList", messageDataList);
       console.log(messageDataList);
       let messageData = new FormData();
       messageData.append("messageData", messageDataList);
       this.checkptFn({
         messageData,
         successCallback: () => {
-          if (this.isSelect) {
-            this.isEnterQuestion = true;
-          } else {
-            this.$router.push({ path: "/policyholder" });
-          }
+          toast1.clear();
+          // if (this.isSelect) {
+          //   this.isEnterQuestion = true;
+          // } else {
+          this.$router.push({ path: "/policyholder" });
+          // }
         },
-        failCallback: () => {}
+        failCallback: result => {
+          toast1.clear();
+          this.$refs.alertFn.isworngFn(result);
+        }
       });
     },
     //跳转至购买记录页面
     recordFn() {
       this.$router.push({ path: "/recordpage" });
+    },
+    //跳转条款页面
+    openClause(index) {
+      // 获取页面的所有值放到一个对象中
+      let messageDataList = {
+        subBirthday: this.birthdayData, //出生日期
+        Charge_year: "3", // 缴费年限
+        subPayMuch: this.numbermony, //交费金额
+        numA: this.numA, //税延养老A款
+        numAPer: this.numAPer,
+        numB: this.numB, //税延养老B款
+        numBPer: this.numBPer,
+        investTimeDa: this.investTimeDa, //投资时间
+        investTimeCode: this.investTimeCode, //C款产品投资时间代码
+        paymentMethod: this.isWayCode, //交费方式
+        wayData: this.wayData, //交费方式
+        taxNumberTwo: this.taxNumberTwo, //纳税人识别号码值
+        organCode1: this.organCode1, //纳税人识别号
+        organCode4: this.organCode4, //社会信用代码
+        taxCodeName: this.taxName, //社会信用代码
+        taxCodeType: this.taxCode, //社会信用代码Code 信用是1 税务是2
+        taxPayerType: this.taxPayerType, //个税征收方式
+        taxStyle: this.taxStyle, //个税征收方式
+        taxPlaceCode: this.taxPlaceCode, //纳税地代码
+        AddressData: this.AddressData, //纳税地
+        taxBureauName: this.taxBureauName, //纳税分局名称
+        jobCom: this.jobCom,
+
+        provinceName: this.provinceName,
+        provinceCode: this.provinceCode,
+        cityName: this.cityName,
+        cityCode: this.cityCode,
+        districtName: this.districtName,
+        districtCode: this.districtCode,
+        OrganId: this.OrganId,
+        agentid: this.agentid,
+        productList: [
+          {
+            productCode: "4013",
+            numA: this.numA, //税延养老A款
+            numAPer: this.numAPer
+          },
+          {
+            productCode: "4014",
+            numB: this.numB, //税延养老B款
+            numBPer: this.numBPer
+          }
+        ]
+      };
+      messageDataList = JSON.stringify(messageDataList);
+      window.localStorage.setItem("messageDataList", messageDataList);
+      if (index == "1") {
+        // this.$router.push({ path: "/clausepage" });
+        window.location.href =
+          "https://tpwxcloud.life.cntaiping.com/wxqhb/jsp/tep/dist/index.html";
+      } else if (index == "2") {
+        this.$router.push({ path: "/clausepageTwo" });
+      } else {
+        // alert(1)
+        window.location.href =
+          "https://tpwxcloud.life.cntaiping.com/wxqhb/dist/static/pdf/rsbxtbtss20170424.pdf";
+      }
     },
     //验证是否是100的整数倍
     isInteger(text) {
@@ -582,8 +836,48 @@ export default {
       this.wrongData = value;
       setTimeout(() => {
         this.isShowWrong = false;
-      }, 1000);
+      }, 3000);
       return false;
+    },
+    //返回时内容保存
+    saveContent() {
+      let messageDataList = JSON.parse(
+        window.localStorage.getItem("messageDataList")
+      );
+      if (messageDataList != "" && messageDataList != null) {
+        this.birthdayData = messageDataList.subBirthday;
+        // Charge_year: "3", // 缴费年限
+        this.numbermony = messageDataList.subPayMuch;
+        this.numA = messageDataList.numA;
+        this.numAPer = messageDataList.numAPer;
+        this.numB = messageDataList.numB;
+        this.numBPer = messageDataList.numBPer;
+        this.numC = messageDataList.numC;
+        this.numCPer = messageDataList.numCPer;
+        this.investTimeDa = messageDataList.investTimeDa;
+        this.investTimeCode = messageDataList.investTimeCode;
+        this.isWayCode = messageDataList.paymentMethod;
+        this.wayData = messageDataList.wayData;
+        this.taxNumberTwo = messageDataList.taxNumberTwo;
+        this.organCode1 = messageDataList.organCode1;
+        this.organCode4 = messageDataList.organCode4;
+        this.taxName = messageDataList.taxCodeName;
+        this.taxCode = messageDataList.taxCodeType;
+        this.taxPayerType = messageDataList.taxPayerType;
+        this.taxStyle = messageDataList.taxStyle;
+        this.taxPlaceCode = messageDataList.taxPlaceCode;
+        this.AddressData = messageDataList.AddressData;
+        this.taxBureauName = messageDataList.taxBureauName;
+        this.provinceName = messageDataList.provinceName;
+        this.provinceCode = messageDataList.provinceCode;
+        this.cityName = messageDataList.cityName;
+        this.cityCode = messageDataList.cityCode;
+        this.districtName = messageDataList.districtName;
+        this.districtCode = messageDataList.districtCode;
+        this.OrganId = messageDataList.OrganId;
+        this.agentid = messageDataList.agentid;
+        this.jobCom = messageDataList.jobCom;
+      }
     }
   }
 };
@@ -652,9 +946,11 @@ export default {
         }
         .tb_premium_num {
           flex: 0.4;
+          color: #999;
           input {
             width: 70%;
             text-align: right;
+            background: #fff;
           }
         }
       }
@@ -764,11 +1060,13 @@ export default {
     border-radius: 2px;
     img {
       width: 100%;
+      margin-bottom: 4px;
     }
   }
   .tb_tk_content {
     padding-left: 5px;
     color: #333333;
+    line-height: 19px;
     a {
       color: #02ad4d;
     }
@@ -779,6 +1077,14 @@ export default {
   padding: 0.5rem 0.3rem;
   text-align: center;
   line-height: 0.75rem;
+  position: relative;
+  .code-close-icon {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    font-size: 0.6rem;
+    color: #c9c9c9;
+  }
   .code_title {
     font-size: 0.46rem;
     color: #333333;
@@ -859,6 +1165,27 @@ export default {
   }
   button:last-child {
     flex: 0.56;
+  }
+}
+//条款样式
+.clause_box {
+  border-radius: 5px;
+}
+.clause_style {
+  width: 9rem;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  border-radius: 10px;
+  font-size: 0.39rem;
+  li {
+    border-bottom: 1px solid rgba(67, 67, 67, 0.15);
+    padding: 0.3rem;
+    a {
+      color: #02ad4d;
+    }
+  }
+  li:last-child {
+    border: none;
   }
 }
 </style>
