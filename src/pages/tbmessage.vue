@@ -176,7 +176,7 @@
           <p>统一社会信用代码</p>
         </div>
         <div class="code_input">
-          <input maxlength="20" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')"  v-model="taxNumber" type="text" placeholder="请输入">
+          <input maxlength="20"  v-model="taxNumber" type="text" placeholder="请输入">
         </div>
       </div>
     </van-dialog>
@@ -569,6 +569,11 @@ export default {
       }
       if (this.jobCom == "" || this.jobCom == undefined) {
         this.$refs.alertFn.isworngFn("请输入单位名称");
+        return false;
+      }
+      //单位地址
+      if (!this.$toolsTwo.AddressNow(this.jobCom)) {
+        this.$refs.alertFn.isworngFn(" 单位名称只能包含汉字、数字、字母！");
         return false;
       }
       //检查是否输入了出生日期

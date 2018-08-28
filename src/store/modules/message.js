@@ -24,6 +24,7 @@ const GET_NATIONALITY_ALL = 'GET_NATIONALITY_ALL' //获取国家码表
 const CRS_INDEX = 'CRS_INDEX' //信息录入完提交接口
 const CRS_EXEMPT = 'CRS_EXEMPT' //是否用CRS
 const NEED_AUTH = 'NEED_AUTH' //是否启用四要素鉴权
+const GET_CHINA_CITY_ALL = 'GET_CHINA_CITY_ALL' //是否启用四要素鉴权
 
 const state = {
     aswerData: '',
@@ -510,6 +511,29 @@ const actions = {
         }).catch((err) => {
             failCallback()
             console.error('信息录入提交方法')
+        })
+    },
+
+    //获取中国所有地区
+    [GET_CHINA_CITY_ALL]({ commit }, { successCallback = () => { }, failCallback = () => { } }) {
+        axios({
+            method: 'get',
+            url: state.ulrData + 'crs/getChinaCityAll.html',
+            data: '',
+            "Content-Type": "multipart/form-data"
+        }).then((res) => {
+            // console.log(res)
+            let result = res.data
+            if (result.state == '0000') {
+                successCallback(result.data)
+            } else {
+                failCallback(result.message)
+                // console.error('历史记录' + result.msg)
+            }
+
+        }).catch((err) => {
+            failCallback()
+            console.error('获取中国所有地区')
         })
     },
 

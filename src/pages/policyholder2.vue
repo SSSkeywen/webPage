@@ -250,30 +250,35 @@ export default {
         familyName: "", //姓（英文或拼音）
         givenNames: "", //名（英文或拼音）
         currentCountry: "请选择", // 现居住地址（中文）国家
+        currentCountryCode: "CN", // 现居住地址（中文）国家
         currentAddress1: "请选择", // 现居住地址（中文）省
         currentAddress2: "请选择", // 现居住地址（中文）市
         currentAddress3: "请选择", //现居住地址（中文）区
         currentAddress4: "", // 现居住地址（中文）详细地址
         currentEnCountry: "请选择", // 现居住地址（英文或拼音）国家
+        currentEnCountryCode: "", //现居住地址（英文或拼音）国家简写
         currentAddressEn1: "", //现居住地址（英文或拼音）省
         currentAddressEn2: "", // 现居住地址（英文或拼音）市
         currentAddressEn3: "", //现居住地址（英文或拼音）详细地址
         birthCountry: "请选择", // 出生地地址（中文）国家
+        birthCountryCode: "CN", // 出生地地址（中文）国家
         birthAddress1: "请选择", // 出生地地址（中文）省
         birthAddress2: "请选择", // 出生地地址（中文）市
         birthAddress3: "请选择", // 出生地地址（中文）区
         birthAddress4: "", // 出生地地址（中文）详细地址
         birthEnCountry: "请选择", // 出生地地址（英文或拼音）国家
+        birthEnCountryCode: "", // 出生地地址（英文或拼音）国家简写
         birthAddressEn1: "", // 出生地地址（英文或拼音）省
         birthAddressEn2: "", // 出生地地址（英文或拼音）市
         birthAddressEn3: "", // 出生地地址（英文或拼音）详细地址
         taxInfo: [
           {
             taxCountry: "请选择", // 税收居民国
+            taxCountryCode: "", // 税收居民国简写
             taxPayerId: "", // 居民国纳税人识别号
             taxIdNoneReason: "请选择", // 无居民地纳税人识别号原因
             taxIdNoneNote: "", // 未能取得纳税人识别号具体原因
-            isInputCause: false, //是否录入未取得纳税人识别号的原因
+            isInputCause: false //是否录入未取得纳税人识别号的原因
           }
         ]
       },
@@ -288,7 +293,6 @@ export default {
       quNum: "", //区的下标
       isChina: true, //现居地是否是中国
       isStarChina: true, //出生地是否是中国
-      
 
       isGreen: false, //是否选择同意
       newAddIcon: require("../../static/img/newAddIcon.png"), //
@@ -327,79 +331,119 @@ export default {
           chanese: "中国"
         }
       ],
-      columnsStateChinaEn: [],  //各个国家中英文
+      columnsStateChinaEn: [], //各个国家中英文
       //国内省市区
+      getChinaCityAllArray: [],
       columnsProvice: [
-        {
-          text: "上海市",
-          textCode: "310000",
-          cityList: [
-            {
-              text: "市辖区、县",
-              textCode: "310100"
-            }
-          ]
-        },
-        {
-          text: "江苏省",
-          textCode: "320000",
-          cityList: [
-            {
-              text: "苏州市",
-              textCode: "320500",
-              countyList: [
-                {
-                  text: "苏州工业园区",
-                  textCode: "320599"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          text: "福建省",
-          textCode: "350000",
-          cityList: [
-            {
-              text: "福州市",
-              textCode: "350100"
-            },
-            {
-              text: "厦门市",
-              textCode: "350200"
-            },
-            {
-              text: "莆田市",
-              textCode: "350300"
-            },
-            {
-              text: "三明市",
-              textCode: "350400"
-            },
-            {
-              text: "泉州市",
-              textCode: "350500"
-            },
-            {
-              text: "漳州市",
-              textCode: "350600"
-            },
-            {
-              text: "南平市",
-              textCode: "350700"
-            },
-            {
-              text: "龙岩市",
-              textCode: "350800"
-            },
-            {
-              text: "宁德市",
-              textCode: "350900"
-            }
-          ]
-        }
+        // {
+        //   text: "上海市",
+        //   textCode: "310000",
+        //   cityList: [
+        //     {
+        //       text: "上海市",
+        //       textCode: "310100",
+        //       countyList: [
+        //         {
+        //           text: "徐汇区",
+        //           textCode: "310104"
+        //         },{
+        //           text: "长宁区",
+        //           textCode: "310105"
+        //         },{
+        //           text: "普陀区",
+        //           textCode: "310107"
+        //         },{
+        //           text: "闸北区",
+        //           textCode: "310108"
+        //         },{
+        //           text: "虹口区",
+        //           textCode: "310109"
+        //         },{
+        //           text: "闵行区",
+        //           textCode: "310112"
+        //         },{
+        //           text: "宝山区",
+        //           textCode: "310113"
+        //         },{
+        //           text: "浦东新区",
+        //           textCode: "310115"
+        //         },{
+        //           text: "金山区",
+        //           textCode: "310116"
+        //         },{
+        //           text: "青浦区",
+        //           textCode: "310118"
+        //         },{
+        //           text: "奉贤区",
+        //           textCode: "310120"
+        //         },{
+        //           text: "崇明县",
+        //           textCode: "310230"
+        //         }
+        //       ]
+        //     }
+        //   ]
+        // },
+        // {
+        //   text: "江苏省",
+        //   textCode: "320000",
+        //   cityList: [
+        //     {
+        //       text: "苏州市",
+        //       textCode: "320500",
+        //       countyList: [
+        //         {
+        //           text: "苏州工业园区",
+        //           textCode: "320599"
+        //         }
+        //       ]
+        //     }
+        //   ]
+        // },
+        // {
+        //   text: "福建省",
+        //   textCode: "350000",
+        //   cityList: [
+        //     {
+        //       text: "福州市",
+        //       textCode: "350100"
+        //     },
+        //     {
+        //       text: "厦门市",
+        //       textCode: "350200"
+        //     },
+        //     {
+        //       text: "莆田市",
+        //       textCode: "350300"
+        //     },
+        //     {
+        //       text: "三明市",
+        //       textCode: "350400"
+        //     },
+        //     {
+        //       text: "泉州市",
+        //       textCode: "350500"
+        //     },
+        //     {
+        //       text: "漳州市",
+        //       textCode: "350600"
+        //     },
+        //     {
+        //       text: "南平市",
+        //       textCode: "350700"
+        //     },
+        //     {
+        //       text: "龙岩市",
+        //       textCode: "350800"
+        //     },
+        //     {
+        //       text: "宁德市",
+        //       textCode: "350900"
+        //     }
+        //   ]
+        // }
       ],
-      nowAddress: false,  //英文国家
+      nowAddress: false, //英文国家
       nowAddressTwo: false, //中文国家
       nowAddressData: "请选择",
       noHasWhyShow: false,
@@ -438,64 +482,150 @@ export default {
   },
   components: { alertWrong },
   created() {
+    this.getChinaCityAll();
     this.getNationalityAll({
-      successCallback: (result) => {
-        this.columnsState = result
-         for(let item of this.columnsState){
-          item.text = item.countryOrRegionEnglishName
+      successCallback: result => {
+        // console.log(result)
+        this.columnsState = result;
+        for (let item of this.columnsState) {
+          item.text = item.countryOrRegionEnglishName;
         }
-        },
-        failCallback: result => {
-        }
-    })
+      },
+      failCallback: result => {}
+    });
     this.getNationalityAll({
-      successCallback: (result) => {
-        this.columnsStateChinaEn = result
-         for(let item of this.columnsStateChinaEn){
-          item.text = item.chinesIdiomaticName+'/'+item.countryOrRegionEnglishName
-          if(item.countryOrRegionEnglishName == 'China'){
-            item.disabled = true
+      successCallback: result => {
+        this.columnsStateChinaEn = result;
+        for (let item of this.columnsStateChinaEn) {
+          item.text =
+            item.chinesIdiomaticName + "/" + item.countryOrRegionEnglishName;
+          if (item.countryOrRegionEnglishName == "China") {
+            item.disabled = true;
           }
         }
-        },
-        failCallback: result => {
-        }
-    })
+      },
+      failCallback: result => {}
+    });
     let policyDataList = JSON.parse(
-        window.localStorage.getItem("policyDataList")
-      );
-      console.log(policyDataList)
-      this.nonResidentTax.currentCountry = '中国'
-      this.nonResidentTax.currentAddress1 = policyDataList.provinceName
-      this.nonResidentTax.currentAddress2 = policyDataList.cityName
-      this.nonResidentTax.currentAddress3 = policyDataList.districtName
-      this.nonResidentTax.currentAddress4 = policyDataList.addressData
+      window.localStorage.getItem("policyDataList")
+    );
+    // console.log(policyDataList)
+    this.nonResidentTax.currentCountry = "中国";
+    this.nonResidentTax.currentAddress1 = policyDataList.provinceName;
+    this.nonResidentTax.currentAddress2 = policyDataList.cityName;
+    this.nonResidentTax.currentAddress3 = policyDataList.districtName;
+    this.nonResidentTax.currentAddress4 = policyDataList.addressData;
     let nonResidentTax = JSON.parse(
-        window.localStorage.getItem("nonResidentTax")
-      );
-      if(nonResidentTax!=''&&nonResidentTax!=undefined && nonResidentTax != null){
-        this.nonResidentTax = nonResidentTax
-      }
+      window.localStorage.getItem("nonResidentTax")
+    );
+    if (
+      nonResidentTax != "" &&
+      nonResidentTax != undefined &&
+      nonResidentTax != null
+    ) {
+      this.nonResidentTax = nonResidentTax;
+    }
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
     ...mapActions({
-      getNationalityAll:"GET_NATIONALITY_ALL",  //获取国家码表
-      crsIndexFn:"CRS_INDEX"//CRS_INDEX数据提交接口方法
+      getNationalityAll: "GET_NATIONALITY_ALL", //获取国家码表GET_CHINA_CITY_ALL
+      crsIndexFn: "CRS_INDEX", //CRS_INDEX数据提交接口方法
+      getChinaCityAllFn: "GET_CHINA_CITY_ALL" //CRS_INDEX数据提交接口方法
     }),
+    //获取全国地区
+    getChinaCityAll() {
+      this.getChinaCityAllFn({
+        successCallback: result => {
+          this.getChinaCityAllArray = result;
+          for (let i = 0; i < result.length; i++) {
+            this.getChinaCityAllArray[i].text = result[i].AREA_NAME;
+            this.getChinaCityAllArray[i].textCode = result[i].AREA_ID;
+            // this.getChinaCityAllArray[i].cityList = []
+            // this.getChinaCityAllArray[i].countyList = []
+            if (this.getChinaCityAllArray[i].CLASS_ID == "1") {
+              this.getChinaCityAllArray[i].cityList = [];
+            }
+            if (this.getChinaCityAllArray[i].CLASS_ID == "2") {
+              this.getChinaCityAllArray[i].countyList = [];
+            }
+          }
+          for (let item of this.getChinaCityAllArray) {
+            if (item.CLASS_ID == "1") {
+              item.cityList = [];
+              this.columnsProvice.push(item);
+            }
+            // if(item.CLASS_ID == '2'){
+
+            // for(let i = 0; i< this.getChinaCityAllArray.length; i ++){
+            // console.log(this.getChinaCityAllArray[i].AREA_ID.slice(0,1))
+            // if(this.getChinaCityAllArray[i].AREA_ID.slice(0,1)==item.AREA_ID.slice(0,1)){
+            //   this.getChinaCityAllArray[i].cityList.push(item)
+            // }
+            // }
+            // }
+            // if(item.CLASS_ID == '3'){
+            //   for(let i = 0; i< this.getChinaCityAllArray.length; i ++){
+            //     if(this.getChinaCityAllArray[i].AREA_ID.slice(2,3)==item.AREA_ID.slice(2,3)){
+            //       this.getChinaCityAllArray[i].countyList.push(item)
+            //     }
+            //   }
+            // }
+          }
+          for (let j = 0; j < this.getChinaCityAllArray.length; j++) {
+            if (this.getChinaCityAllArray[j].CLASS_ID == "2") {
+              for (let i = 0; i < this.columnsProvice.length; i++) {
+                if (
+                  this.columnsProvice[i].AREA_ID.slice(0, 2) ==
+                  this.getChinaCityAllArray[j].AREA_ID.slice(0, 2)
+                ) {
+                  this.columnsProvice[i].cityList.push(
+                    this.getChinaCityAllArray[j]
+                  );
+                }
+              }
+            }
+          // }
+          // for (let j = 0; j < this.getChinaCityAllArray.length; j++) {
+            if (this.getChinaCityAllArray[j].CLASS_ID == "3") {
+              for (let i = 0; i < this.columnsProvice.length; i++) {
+                for (
+                  let z = 0;
+                  z < this.columnsProvice[i].cityList.length;
+                  z++
+                ) {
+                  if (
+                    this.columnsProvice[i].cityList[z].AREA_ID.slice(0, 4) ==
+                    this.getChinaCityAllArray[j].AREA_ID.slice(0, 4)
+                  ) {
+                    // console.log(1)
+                    
+                    this.columnsProvice[i].cityList[z].countyList.push(
+                      this.getChinaCityAllArray[j]
+                    );
+                  }
+                }
+              }
+            }
+          }
+
+          console.log(this.columnsProvice);
+        },
+        failCallback: result => {}
+      });
+    },
     //国家选择函数
     selectState(index, indexNum) {
       this.selectStateIndex = index;
-      console.log(index)
+      // console.log(index)
       //国家的选择英文
       if (index == "1" || index == "6") {
         this.columns = this.columnsState;
-        console.log(this.columns)
+        // console.log(this.columns)
         this.nowAddress = true;
       }
       //国家选择中文
-      if (index == "2" || index == "7" ) {
+      if (index == "2" || index == "7") {
         this.columns = this.columnsStateChina;
         this.nowAddress = true;
       }
@@ -537,7 +667,6 @@ export default {
         this.nowAddress = true;
       }
       if (index == "9") {
-
         // console.log(this.columnsProvice[this.shengNum]);
         if (this.columnsProvice[this.shengNumTwo] != undefined) {
           this.columns = this.columnsProvice[this.shengNumTwo].cityList;
@@ -549,7 +678,8 @@ export default {
       if (index == "10") {
         if (
           this.columnsProvice[this.shengNumTwo] != undefined &&
-          this.columnsProvice[this.shengNumTwo].cityList[this.shiNumTwo] != undefined
+          this.columnsProvice[this.shengNumTwo].cityList[this.shiNumTwo] !=
+            undefined
         ) {
           this.columns = this.columnsProvice[this.shengNumTwo].cityList[
             this.shiNumTwo
@@ -566,17 +696,17 @@ export default {
         this.selectStateIndexSs = indexNum;
         this.nowAddressTwo = true;
       }
-      
     },
     onConfirm(value, index) {
       //Toast(`当前值：${value.text}, 当前索引：${index}`);
       if (this.selectStateIndex == "1") {
         this.nonResidentTax.currentEnCountry = value.text;
-        if(this.nonResidentTax.currentEnCountry == 'China'){
-          this.nonResidentTax.currentCountry = '中国'
-          this.isChina = true
-        }else{
-          this.isChina = false
+        this.nonResidentTax.currentEnCountryCode = value.twoBitLetters;
+        if (this.nonResidentTax.currentEnCountry == "China") {
+          this.nonResidentTax.currentCountry = "中国";
+          this.isChina = true;
+        } else {
+          this.isChina = false;
         }
       }
       //现居地中文国家
@@ -603,11 +733,12 @@ export default {
       //出生地英文国家
       if (this.selectStateIndex == "6") {
         this.nonResidentTax.birthEnCountry = value.text;
-        if(this.nonResidentTax.birthEnCountry == 'China'){
-          this.nonResidentTax.birthCountry = '中国'
-          this.isStarChina = true
-        }else{
-          this.isStarChina = false
+        this.nonResidentTax.birthEnCountryCode = value.twoBitLetters;
+        if (this.nonResidentTax.birthEnCountry == "China") {
+          this.nonResidentTax.birthCountry = "中国";
+          this.isStarChina = true;
+        } else {
+          this.isStarChina = false;
         }
       }
       //出生地英文国家
@@ -634,6 +765,8 @@ export default {
       if (this.selectStateIndex == "11") {
         this.nonResidentTax.taxInfo[this.selectStateIndexSs].taxCountry =
           value.text;
+        this.nonResidentTax.taxInfo[this.selectStateIndexSs].taxCountryCode =
+          value.twoBitLetters;
         this.nowAddressTwo = false;
       }
       this.nowAddress = false;
@@ -675,6 +808,7 @@ export default {
           "境内地址，请录入完整的现居住地址（中文）！"
         );
         return false;
+      } else {
       }
       //判断是否录入出生地(英文或拼音)
       if (
@@ -714,7 +848,7 @@ export default {
           );
           return false;
         }
-        
+
         if (
           item.taxIdNoneReason == "账户持有人未能取得纳税人识别号" &&
           item.taxIdNoneNote == ""
@@ -724,23 +858,29 @@ export default {
           );
           return false;
         }
-        if(item.taxPayerId !=''&&item.taxPayerId !=undefined&&item.taxPayerId !=null){
+        if (
+          item.taxPayerId != "" &&
+          item.taxPayerId != undefined &&
+          item.taxPayerId != null
+        ) {
           // console.log(item.taxPayerId)
-          item.taxIdNoneReason = ""
-          item.taxIdNoneNote = ""
+          item.taxIdNoneReason = "";
+          item.taxIdNoneNote = "";
         }
-        console.log(this.nonResidentTax.taxInfo)
-        if(item.taxPayerId != ""){
-          item.taxIdNoneReason == ""
+        console.log(this.nonResidentTax.taxInfo);
+        if (item.taxPayerId != "") {
+          item.taxIdNoneReason == "";
         }
-        if(item.taxIdNoneReason == "请选择"){
-          item.taxIdNoneReason = ''
+        if (item.taxIdNoneReason == "请选择") {
+          item.taxIdNoneReason = "";
         }
       }
 
       //判断是否本人已经确认
       if (!this.isGreen) {
-        this.$refs.alertFn.isworngFn("请先勾选《非居民金融账户涉税信息表》声明！");
+        this.$refs.alertFn.isworngFn(
+          "请先勾选《非居民金融账户涉税信息表》声明！"
+        );
         return false;
       }
 
@@ -752,17 +892,35 @@ export default {
       //   this.$refs.alertFn.isworngFn(" 用户名不能为空！");
       //   return false;
       // }
-      if(this.nonResidentTax.birthAddress1 == '请选择'){
-        this.nonResidentTax.birthAddress1 = ''
+      if (this.nonResidentTax.currentEnCountry != "China") {
+        this.nonResidentTax.currentCountry = ""; // 现居住地址（中文）国家
+        this.nonResidentTax.currentCountryCode = ""; // 现居住地址（中文）国家
+        this.nonResidentTax.currentAddress1 = ""; // 现居住地址（中文）省
+        this.nonResidentTax.currentAddress2 = ""; // 现居住地址（中文）市
+        this.nonResidentTax.currentAddress3 = ""; //现居住地址（中文）区
+        this.nonResidentTax.currentAddress4 = "";
       }
-      if(this.nonResidentTax.birthAddress2 == '请选择'){
-        this.nonResidentTax.birthAddress2 = ''
+
+      if (this.nonResidentTax.birthEnCountry != "China") {
+        this.nonResidentTax.birthCountry = ""; // 现居住地址（中文）国家
+        this.nonResidentTax.birthCountryCode = ""; // 现居住地址（中文）国家
+        this.nonResidentTax.birthAddress1 = ""; // 现居住地址（中文）省
+        this.nonResidentTax.birthAddress2 = ""; // 现居住地址（中文）市
+        this.nonResidentTax.birthAddress3 = ""; //现居住地址（中文）区
+        this.nonResidentTax.birthAddress4 = "";
       }
-      if(this.nonResidentTax.birthAddress3 == '请选择'){
-        this.nonResidentTax.birthAddress3 = ''
+
+      if (this.nonResidentTax.birthAddress1 == "请选择") {
+        this.nonResidentTax.birthAddress1 = "";
       }
-      if(this.nonResidentTax.birthCountry == '请选择'){
-        this.nonResidentTax.birthCountry = ''
+      if (this.nonResidentTax.birthAddress2 == "请选择") {
+        this.nonResidentTax.birthAddress2 = "";
+      }
+      if (this.nonResidentTax.birthAddress3 == "请选择") {
+        this.nonResidentTax.birthAddress3 = "";
+      }
+      if (this.nonResidentTax.birthCountry == "请选择") {
+        this.nonResidentTax.birthCountry = "";
       }
       console.log("--------消息通过--------");
       const toast1 = Toast.loading({
@@ -776,15 +934,19 @@ export default {
       // let policyDataB = JSON.stringify(policyDataList);
       // window.localStorage.setItem("policyDataList", policyDataB);
       // console.log(policyDataB);
-      let checkedData = JSON.parse(
-        window.localStorage.getItem("checkedData")
-      );
+      let checkedData = JSON.parse(window.localStorage.getItem("checkedData"));
       let crsIndexData = new FormData();
-      crsIndexData.append("nonResidentTax", JSON.stringify(this.nonResidentTax));
+      crsIndexData.append(
+        "nonResidentTax",
+        JSON.stringify(this.nonResidentTax)
+      );
       // crsIndexData.append("taxpayerType", JSON.stringify(checkedData));
       // console.log(JSON.stringify(checkedData))
-      console.log(JSON.stringify(this.nonResidentTax))
-      window.localStorage.setItem("nonResidentTax", JSON.stringify(this.nonResidentTax));
+      console.log(JSON.stringify(this.nonResidentTax));
+      window.localStorage.setItem(
+        "nonResidentTax",
+        JSON.stringify(this.nonResidentTax)
+      );
       this.crsIndexFn({
         crsIndexData,
         successCallback: () => {
@@ -809,13 +971,14 @@ export default {
     taxClick(item) {
       this.nonResidentTax.taxInfo[this.taxIndex].taxIdNoneReason = item.name;
       if (
-          this.nonResidentTax.taxInfo[this.taxIndex].taxIdNoneReason == "账户持有人未能取得纳税人识别号"
-        ) {
-          this.nonResidentTax.taxInfo[this.taxIndex].isInputCause = true
-        }else{
-          this.nonResidentTax.taxInfo[this.taxIndex].isInputCause = false
-        }
-      
+        this.nonResidentTax.taxInfo[this.taxIndex].taxIdNoneReason ==
+        "账户持有人未能取得纳税人识别号"
+      ) {
+        this.nonResidentTax.taxInfo[this.taxIndex].isInputCause = true;
+      } else {
+        this.nonResidentTax.taxInfo[this.taxIndex].isInputCause = false;
+      }
+
       this.noHasWhyShow = false;
     },
 

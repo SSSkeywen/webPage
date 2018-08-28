@@ -67,6 +67,15 @@ export default {
         }
         return resultFlag;
     },
+    //地址校验
+    AddressNow: (AddressNowData) => {
+        let regex = new RegExp("^[A-Za-z0-9\u4e00-\u9fa5]+$");
+        let resultFlag = true
+        if (!regex.exec(AddressNowData)) {
+            resultFlag = false;
+        }
+        return resultFlag;
+    },
     //邮箱校验
     emailFn: (emailData) => {
         let regex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]+$/;
