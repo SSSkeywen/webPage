@@ -273,7 +273,7 @@ export default {
               secondContenst: [
                 {
                   secondContent:
-                    "本公司太平保宝平台不销售税延C款产品。"
+                    "本公司太平微信平台不销售税延C款产品。"
                 }
               ]
             },
@@ -284,7 +284,7 @@ export default {
               secondContenst: [
                 {
                   secondContent:
-                    "本产品等待期为30天。"
+                    "本产品无等待期。"
                 }
               ]
             },

@@ -5,36 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
     <title>太平税延养老</title>
     <script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <script type="text/javascript">
+      document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+        WeixinJSBridge.call('hideOptionMenu');
+      });
+    </script>
     <!-- <script src="./static/js/jquery-1.7.2.min.js"></script> -->
   </head>
   <body>
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>
-  <script type="text/javascript">
-    document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
-      WeixinJSBridge.call('hideOptionMenu');
-    });
-    // $(document.body).on('touchmove', function (event) { event.preventDefault(); }, false);
-    //  document.body.addEventListener('touchmove', function (e) { e.preventDefault(); }, { passive: false });
-    /**
-   * 禁止浏览器下拉回弹
-   */
-      // function stopDrop() {
-      //   var lastY;//最后一次y坐标点
-      //   $(document.body).on('touchstart', function (event) {
-      //     lastY = event.originalEvent.changedTouches[0].clientY;//点击屏幕时记录最后一次Y度坐标。
-      //   });
-      //   $(document.body).on('touchmove', function (event) {
-      //     var y = event.originalEvent.changedTouches[0].clientY;
-      //     var st = $(this).scrollTop(); //滚动条高度  
-      //     if (y >= lastY && st <= 10) {//如果滚动条高度小于0，可以理解为到顶了，且是下拉情况下，阻止touchmove事件。
-      //       lastY = y;
-      //       event.preventDefault();
-      //     }
-      //     lastY = y;
-
-      //   });
-      // }
-  </script>
+  
 </html>

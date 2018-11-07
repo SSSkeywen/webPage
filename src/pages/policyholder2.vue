@@ -509,12 +509,14 @@ export default {
     let policyDataList = JSON.parse(
       window.localStorage.getItem("policyDataList")
     );
-    // console.log(policyDataList)
     this.nonResidentTax.currentCountry = "中国";
     this.nonResidentTax.currentAddress1 = policyDataList.provinceName;
     this.nonResidentTax.currentAddress2 = policyDataList.cityName;
     this.nonResidentTax.currentAddress3 = policyDataList.districtName;
     this.nonResidentTax.currentAddress4 = policyDataList.addressData;
+    if(this.nonResidentTax.currentAddress1 =='上海市'){
+      this.nonResidentTax.currentAddress2 = '上海市'
+    }
     let nonResidentTax = JSON.parse(
       window.localStorage.getItem("nonResidentTax")
     );
@@ -555,29 +557,13 @@ export default {
               item.cityList = [];
               this.columnsProvice.push(item);
             }
-            // if(item.CLASS_ID == '2'){
-
-            // for(let i = 0; i< this.getChinaCityAllArray.length; i ++){
-            // console.log(this.getChinaCityAllArray[i].AREA_ID.slice(0,1))
-            // if(this.getChinaCityAllArray[i].AREA_ID.slice(0,1)==item.AREA_ID.slice(0,1)){
-            //   this.getChinaCityAllArray[i].cityList.push(item)
-            // }
-            // }
-            // }
-            // if(item.CLASS_ID == '3'){
-            //   for(let i = 0; i< this.getChinaCityAllArray.length; i ++){
-            //     if(this.getChinaCityAllArray[i].AREA_ID.slice(2,3)==item.AREA_ID.slice(2,3)){
-            //       this.getChinaCityAllArray[i].countyList.push(item)
-            //     }
-            //   }
-            // }
           }
           for (let j = 0; j < this.getChinaCityAllArray.length; j++) {
             if (this.getChinaCityAllArray[j].CLASS_ID == "2") {
               for (let i = 0; i < this.columnsProvice.length; i++) {
                 if (
-                  this.columnsProvice[i].AREA_ID.slice(0, 2) ==
-                  this.getChinaCityAllArray[j].AREA_ID.slice(0, 2)
+                  this.columnsProvice[i].AREA_ID ==
+                  this.getChinaCityAllArray[j].PARENT_ID
                 ) {
                   this.columnsProvice[i].cityList.push(
                     this.getChinaCityAllArray[j]
@@ -585,8 +571,8 @@ export default {
                 }
               }
             }
-          // }
-          // for (let j = 0; j < this.getChinaCityAllArray.length; j++) {
+          }
+          for (let j = 0; j < this.getChinaCityAllArray.length; j++) {
             if (this.getChinaCityAllArray[j].CLASS_ID == "3") {
               for (let i = 0; i < this.columnsProvice.length; i++) {
                 for (
@@ -595,11 +581,9 @@ export default {
                   z++
                 ) {
                   if (
-                    this.columnsProvice[i].cityList[z].AREA_ID.slice(0, 4) ==
-                    this.getChinaCityAllArray[j].AREA_ID.slice(0, 4)
+                    this.columnsProvice[i].cityList[z].AREA_ID ==
+                    this.getChinaCityAllArray[j].PARENT_ID
                   ) {
-                    // console.log(1)
-                    
                     this.columnsProvice[i].cityList[z].countyList.push(
                       this.getChinaCityAllArray[j]
                     );
@@ -609,7 +593,7 @@ export default {
             }
           }
 
-          console.log(this.columnsProvice);
+          
         },
         failCallback: result => {}
       });
@@ -639,11 +623,22 @@ export default {
         this.nowAddress = true;
       }
       if (index == "4") {
-        console.log(this.columnsProvice[this.shengNum]);
+        
+        
+        
+
         if (this.columnsProvice[this.shengNum] != undefined) {
           this.columns = this.columnsProvice[this.shengNum].cityList;
         } else {
-          this.columns = [];
+          // this.columns = [];
+            let policyDataList = JSON.parse(
+            window.localStorage.getItem("policyDataList")
+          );
+          for(let i = 0; i < this.columnsProvice.length; i ++){
+            if(this.columnsProvice[i].textCode == policyDataList.provinceCode ){
+              this.columns = this.columnsProvice[i].cityList;
+            }
+          }
         }
         this.nowAddress = true;
       }
@@ -656,7 +651,20 @@ export default {
             this.shiNum
           ].countyList;
         } else {
-          this.columns = [];
+          // this.columns = [];
+          let policyDataList = JSON.parse(
+            window.localStorage.getItem("policyDataList")
+          );
+          for(let i = 0; i < this.columnsProvice.length; i++){
+            for(let j = 0; j < this.columnsProvice[i].cityList.length; j++){
+              if(this.columnsProvice[i].cityList[j].textCode == policyDataList.cityCode ){
+                      this.columns = this.columnsProvice[i].cityList[j].countyList;
+                    }
+            }
+          }
+          if(this.nonResidentTax.currentAddress2 == "请选择"){
+            this.columns = [];
+          }
         }
         this.nowAddress = true;
       }

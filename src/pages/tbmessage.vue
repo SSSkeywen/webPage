@@ -584,14 +584,14 @@ export default {
       if (this.isWayCode == "4") {
         if (this.numbermony > 1000) {
           this.$refs.alertFn.isworngFn(
-            "两款税延险年交总保费不超过12000元；月交总保费不超过1000元。"
+            "两款税延险月交总保费不超过1000元。"
           );
           return false;
         }
       } else if (this.isWayCode == "2") {
         if (this.numbermony > 12000) {
           this.$refs.alertFn.isworngFn(
-            "两款税延险年交总保费不超过12000元；月交总保费不超过1000元。"
+            "两款税延险月交总保费不超过1000元。"
           );
           return false;
         }

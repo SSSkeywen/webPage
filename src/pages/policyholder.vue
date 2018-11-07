@@ -648,8 +648,8 @@ export default {
       this.sendTepy({
         sendTEPYzmData,
         successCallback: result => {
-          this.vcCodeNow = result;
-          this.vcCode = result;
+          // this.vcCodeNow = result;
+          // this.vcCode = result;
         },
         failCallback: () => {}
       });
@@ -732,7 +732,7 @@ export default {
       const toast1 = Toast.loading({
         mask: true,
         message: "提交中...",
-        duration: 20000
+        duration: 0
       });
       let timeData = "";
       if (this.identityTimeData == "长期有效") {

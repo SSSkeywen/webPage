@@ -239,7 +239,7 @@ const actions = {
 
         }).catch((err) => {
             failCallback()
-            console.error('提交数据接口未通')
+            console.error('提交数据接口未通111111')
         })
     },
     //支付2
@@ -256,12 +256,12 @@ const actions = {
                 successCallback()
             } else {
                 failCallback(result.msg)
-                console.error('提交数据接口报错' + result.msg)
+                console.error('提交数据接口报错2222' + result.msg)
             }
 
         }).catch((err) => {
             // failCallback()
-            console.error('提交数据接口未通')
+            console.error('提交数据接口未通222222')
         })
     },
     //获取职业
