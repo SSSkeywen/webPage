@@ -648,8 +648,8 @@ export default {
       this.sendTepy({
         sendTEPYzmData,
         successCallback: result => {
-          // this.vcCodeNow = result;
-          // this.vcCode = result;
+          this.vcCodeNow = result;
+          this.vcCode = result;
         },
         failCallback: () => {}
       });

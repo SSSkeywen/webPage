@@ -81,6 +81,8 @@ export default {
             item.bdstate = "支付处理中";
           } else if (item.applyState == "3") {
             item.bdstate = "已支付待承保";
+          } else if (item.applyState == "7") {
+            item.bdstate = "已撤销";
           } else {
             item.bdstate = "已生效";
           }

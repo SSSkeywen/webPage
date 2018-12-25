@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/wxqhb/': {
-        // target: 'http://10.7.181.153:8090', // 你接口的域名 曹
+        // target: 'http://10.7.181.135:8090', // 你接口的域名 曹
         // target: 'http://10.1.112.64:8090', // 你接口的域名 张文
          target: 'https://tpwxtestcloud.life.cntaiping.com', // 你接口的域名
         secure: false,
